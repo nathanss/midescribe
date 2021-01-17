@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "antd/dist/antd.css";
+import "./App.css";
+import { Layout, Menu } from "antd";
+import { BrowserRouter, Link, Route } from "react-router-dom";
+import Home from "./pages/home/Home";
+import HowToUse from "./pages/howtouse/HowToUse";
+import Contact from "./pages/contact/Contact";
+
+const { Header, Content, Footer } = Layout;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Layout>
+        <Header>
+          <Menu theme="light" mode="horizontal" defaultSelectedKeys={["home"]}>
+            <Menu.Item key="home">
+              <Link to="/">Home</Link>
+            </Menu.Item>
+            <Menu.Item key="howtouse">
+              <Link to="/howtouse">How to use</Link>
+            </Menu.Item>
+            <Menu.Item key="contact">
+              <Link to="/contact">Contact</Link>
+            </Menu.Item>
+          </Menu>
+        </Header>
+        <Content>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/howtouse" component={HowToUse} />
+          <Route exact path="/contact" component={Contact} />
+        </Content>
+        <Footer style={{ textAlign: "center" }}>Footer</Footer>
+      </Layout>
+    </BrowserRouter>
   );
 }
 
