@@ -1,6 +1,7 @@
-import { Button, Form, Input, Switch } from "antd";
+import { Button, Col, Form, Input, Row, Switch } from "antd";
 import React, { useState } from "react";
 import DeleteButton from "../../components/DeleteButton";
+import DrumPowerHand from "../../components/musicData/DrumPowerHand";
 import Instrument from "../../components/musicData/Instrument";
 import Key from "../../components/musicData/Key";
 import NotesDuration from "../../components/musicData/NotesDuration";
@@ -34,6 +35,7 @@ function Home() {
   };
 
   return (
+    //TODO perhaps create a component to render component + delete button with col and row
     <>
       <div className="site-layout-content">
         <h2>Title</h2>
@@ -58,17 +60,29 @@ function Home() {
         <div className="site-layout-content">
           <h2>Here's what was recognized from your description</h2>
           <Form {...layout}>
-            <Form.Item label="Tempo" tooltip="TODO">
-              <Tempo />
-              <DeleteButton />
+            <Form.Item label="Tempo" tooltip="TODO" {...layout}>
+              <Row>
+                <Col span={23}>
+                  <Tempo />
+                </Col>
+                <DeleteButton />
+              </Row>
             </Form.Item>
             <Form.Item label="Scale">
-              <Scale />
-              <DeleteButton />
+              <Row>
+                <Col span={23}>
+                  <Scale />
+                </Col>
+                <DeleteButton />
+              </Row>
             </Form.Item>
             <Form.Item label="Key">
-              <Key />
-              <DeleteButton />
+              <Row>
+                <Col span={23}>
+                  <Key />
+                </Col>
+                <DeleteButton />
+              </Row>
             </Form.Item>
             <Form.Item label="Notes duration">
               <NotesDuration />
@@ -86,6 +100,15 @@ function Home() {
               <Switch />
               <DeleteButton />
             </Form.Item>
+            <Form.Item label="Is drum beat">
+              <Switch />
+              <DeleteButton />
+            </Form.Item>
+            <Form.Item label="Drum power hand">
+              <DrumPowerHand />
+              <DeleteButton />
+            </Form.Item>
+
             <Form.Item {...addFieldLayout}>
               <Button type="dashed" block>
                 Add field

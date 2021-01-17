@@ -1,6 +1,6 @@
 import { Button } from "antd";
-import { DeleteTwoTone } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 
 export default function DeleteButton() {
-  return <Button icon={<DeleteTwoTone />}></Button>;
+  return <Button type="text" icon={<CloseOutlined />}></Button>;
 }
