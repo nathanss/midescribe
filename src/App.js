@@ -12,7 +12,7 @@ function App() {
   return (
     <BrowserRouter>
       <Layout>
-        <Header>
+        <Header className="header">
           <Menu theme="light" mode="horizontal" defaultSelectedKeys={["home"]}>
             <Menu.Item key="home">
               <Link to="/">Home</Link>
