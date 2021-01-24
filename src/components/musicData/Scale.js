@@ -1,5 +1,4 @@
 import { Radio } from "antd";
-import React from "react";
 
 export default function Scale() {
   return (
