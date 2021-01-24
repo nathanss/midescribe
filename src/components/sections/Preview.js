@@ -4,10 +4,11 @@ import {
   SoundFontPlayer,
 } from "@magenta/music";
 import { saveAs } from "file-saver";
-import { Button } from "antd";
+import { Button, Col, Row, Form } from "antd";
 import { useEffect, useState } from "react";
 import "./Preview.css";
 import { PlayCircleOutlined, StopOutlined } from "@ant-design/icons";
+import MidiMeSlider from "../musicData/MidiMeSlider";
 
 let visualizer, player;
 
@@ -49,8 +50,27 @@ export default function Preview() {
       "https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus"
     );
   });
+
   return (
     <div style={{ position: "relative" }}>
+      <Form>
+        <Form.Item label="Sliders">
+          <Row>
+            <Col span={6}>
+              <MidiMeSlider />
+            </Col>
+            <Col span={6}>
+              <MidiMeSlider />
+            </Col>
+            <Col span={6}>
+              <MidiMeSlider />
+            </Col>
+            <Col span={6}>
+              <MidiMeSlider />
+            </Col>
+          </Row>
+        </Form.Item>
+      </Form>
       <div className="visualizer-container cream">
         <Button
           className="button-circle"
