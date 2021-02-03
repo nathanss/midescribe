@@ -4,6 +4,8 @@ import CharacteristicsForm from "../../components/sections/CharacteristicsForm";
 import Preview from "../../components/sections/Preview";
 import "./Home.css";
 
+import { Sequence } from "../../constants/Sequences";
+
 function Home() {
   const [showExtractedData, setShowExtractedData] = useState(false);
   const [showPreview, setShowPreview] = useState(true);
@@ -47,7 +49,7 @@ function Home() {
       {showPreview && (
         <div className="site-layout-content">
           <h2>Preview</h2>
-          <Preview />
+          <Preview originalSequence={Sequence} />
         </div>
       )}
     </>
