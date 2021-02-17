@@ -31,7 +31,6 @@ export class SongDescriptorNoteSequenceGenerator {
       drumPowerHand: properties.drumPowerHand || "closed hihat",
       drumLoop: properties.drumLoop || ["kick", "snare"],
       drumOpeningHit: properties.drumOpeningHit || "crash cymbal",
-      humanized: properties.humanized || false,
     };
     const [numerator, denominator] = this.properties.timeSignature
       .split(":")
