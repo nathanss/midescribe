@@ -5,6 +5,8 @@ import Preview from "../../components/sections/Preview";
 import "./Home.css";
 
 import { Sequence } from "../../constants/Sequences";
+import { SongDescriptorNoteSequenceGenerator } from "../../musicGeneration/SongDescriptorNoteSequenceGenerator";
+import { NoteSequence } from "@magenta/music/es6";
 
 function Home() {
   const [showExtractedData, setShowExtractedData] = useState(false);
@@ -13,9 +15,20 @@ function Home() {
     setShowExtractedData(true);
   }
 
+  const [sequence, setSequence] = useState(Sequence);
+
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 12 },
+  };
+
+  const onDescriptionSubmit = (description) => {
+    const generator = new SongDescriptorNoteSequenceGenerator(
+      description,
+      NoteSequence.create
+    );
+    const sequence = generator.generateNoteSequence();
+    setSequence(sequence);
   };
 
   return (
@@ -43,13 +56,13 @@ function Home() {
       {showExtractedData && (
         <div className="site-layout-content">
           <h2>Here's what was recognized from your description</h2>
-          <CharacteristicsForm />
+          <CharacteristicsForm onDescriptionSubmit={onDescriptionSubmit} />
         </div>
       )}
       {showPreview && (
         <div className="site-layout-content">
           <h2>Preview</h2>
-          <Preview originalSequence={Sequence} />
+          <Preview originalSequence={sequence} />
         </div>
       )}
     </>

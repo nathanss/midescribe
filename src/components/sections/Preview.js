@@ -35,31 +35,26 @@ export default function Preview({ originalSequence }) {
 
   useEffect(() => {
     const trainModel = async () => {
-      if (!isTrained) {
-        const mvae = new MusicVAE(
-          "https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/mel_2bar_small"
-        );
-        await mvae.initialize();
-        const midime = new MidiMe({
-          epochs: 100,
-        });
-        await midime.initialize();
-        const quantizedMel = sequences.quantizeNoteSequence(
-          originalSequence,
-          4
-        );
-        const z = await mvae.encode(getChunks([quantizedMel]));
-        await midime.train(z, async (epoch, logs) => {
-          console.log(epoch);
-          console.log(logs);
-        });
-        setIsTrained(true);
-        setMidime(midime);
-        setMvae(mvae);
-      }
+      const mvae = new MusicVAE(
+        "https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/mel_2bar_small"
+      );
+      await mvae.initialize();
+      const midime = new MidiMe({
+        epochs: 100,
+      });
+      await midime.initialize();
+      const quantizedMel = sequences.quantizeNoteSequence(originalSequence, 4);
+      const z = await mvae.encode(getChunks([quantizedMel]));
+      await midime.train(z, async (epoch, logs) => {
+        console.log(epoch);
+        console.log(logs);
+      });
+      setIsTrained(true);
+      setMidime(midime);
+      setMvae(mvae);
     };
     trainModel();
-  });
+  }, [originalSequence]);
 
   useEffect(() => {
     const visualizer = new PianoRollSVGVisualizer(

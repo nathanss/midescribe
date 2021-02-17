@@ -2,16 +2,15 @@ export interface SongIdeaEntryPoint {
   tempo?: string;
   tempoDescription?: keyof typeof TempoDescription;
   scale?: keyof typeof Scale;
-  key?: keyof typeof Key;
+  key?: keyof typeof Keys;
   notesDuration?: keyof typeof NotesDuration;
-  instrument?: string;
+  instrument?: keyof typeof Instruments;
   timeSignature: string;
   monophonic?: boolean;
   isDrum?: boolean;
   drumPowerHand?: keyof typeof Percussion;
   drumLoop?: Array<keyof typeof Percussion>;
   drumOpeningHit?: keyof typeof Percussion;
-  humanized?: boolean;
 }
 
 export enum PositionEnum {
@@ -29,15 +28,35 @@ export const ScaleToValues = {
   undefined: [0, 2, 4, 5, 7, 9, 11],
 };
 
-export enum Key {
+export enum Keys {
   c = "c",
+  "c#" = "c#",
   d = "d",
+  "d#" = "d#",
+  e = "E",
+  f = "F",
+  "f#" = "F#",
+  g = "G",
+  "g#" = "G#",
+  a = "A",
+  "a#" = "A#",
+  b = "B",
 }
 
 export const KeyToOffset = {
   c: 0,
   "c#": 1,
   d: 2,
+  "d#": 3,
+  e: 4,
+  f: 5,
+  "f#": 6,
+  g: 7,
+  "g#": 8,
+  a: 9,
+  "a#": 10,
+  b: 11,
+  undefined: 0,
 };
 
 export enum Percussion {
@@ -73,7 +92,7 @@ export interface TimeSignature {
   denominator: number;
 }
 
-export type ScaleToNotes = Record<keyof typeof Key, Note[]>;
+export type ScaleToNotes = Record<keyof typeof Keys, Note[]>;
 
 export type Note = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 

@@ -1,13 +1,17 @@
 import { Button, Col, Form, Row, Switch } from "antd";
 import DeleteButton from "../DeleteButton";
-import DrumPowerHand from "../../components/musicData/DrumPowerHand";
-import Instrument from "../../components/musicData/Instrument";
-import Key from "../../components/musicData/Key";
-import NotesDuration from "../../components/musicData/NotesDuration";
-import Scale from "../../components/musicData/Scale";
-import Tempo from "../../components/musicData/Tempo";
-import TimeSignature from "../../components/musicData/TimeSignature";
+import DrumPowerHand from "../musicData/DrumPowerHand";
+import Instrument from "../musicData/Instrument";
+import Key from "../musicData/Key";
+import NotesDuration from "../musicData/NotesDuration";
+import Scale from "../musicData/Scale";
+import Tempo from "../musicData/Tempo";
+import TimeSignature from "../musicData/TimeSignature";
 import { useState } from "react";
+import {
+  Instruments,
+  SongIdeaEntryPoint,
+} from "../../musicGeneration/SongIdeaInterfaces";
 
 const layout = {
   labelCol: { span: 4 },
@@ -27,13 +31,13 @@ const addFieldLayout = {
   },
 };
 
-export default function CharacteristicsForm() {
-  const [characteristics, setCharacteristics] = useState({
-    tempo: 120,
+export default function CharacteristicsForm(props: any) {
+  const [characteristics, setCharacteristics] = useState<SongIdeaEntryPoint>({
+    tempo: "120",
     scale: "major",
     key: "d",
     notesDuration: "quarter notes",
-    instrument: "aa",
+    instrument: "piano",
     timeSignature: "4:4",
     monophonic: true,
     isDrum: false,
@@ -47,8 +51,8 @@ export default function CharacteristicsForm() {
           <Col span={23}>
             <Tempo
               value={characteristics.tempo}
-              onAfterChange={(value) => {
-                setCharacteristics({ ...characteristics, tempo: value });
+              onAfterChange={(tempo: any) => {
+                setCharacteristics({ ...characteristics, tempo });
               }}
             />
           </Col>
@@ -60,7 +64,7 @@ export default function CharacteristicsForm() {
           <Col span={23}>
             <Scale
               value={characteristics.scale}
-              onChange={(event) => {
+              onChange={(event: any) => {
                 setCharacteristics({
                   ...characteristics,
                   scale: event.target.value,
@@ -76,7 +80,7 @@ export default function CharacteristicsForm() {
           <Col span={23}>
             <Key
               value={characteristics.key}
-              onChange={(key) => {
+              onChange={(key: any) => {
                 setCharacteristics({ ...characteristics, key });
               }}
             />
@@ -89,13 +93,13 @@ export default function CharacteristicsForm() {
         <DeleteButton />
       </Form.Item>
       <Form.Item label="Instrument">
-        <Instrument />
+        <Instrument values={Instruments} />
         <DeleteButton />
       </Form.Item>
       <Form.Item label="Time signature">
         <TimeSignature
           value={characteristics.timeSignature}
-          onChange={(timeSignature) => {
+          onChange={(timeSignature: any) => {
             setCharacteristics({ ...characteristics, timeSignature });
           }}
         />
@@ -123,7 +127,7 @@ export default function CharacteristicsForm() {
         <Form.Item label="Drum power hand">
           <DrumPowerHand
             value={characteristics.drumPowerHand}
-            onChange={(drumPowerHand) => {
+            onChange={(drumPowerHand: any) => {
               setCharacteristics({ ...characteristics, drumPowerHand });
             }}
           />
@@ -137,7 +141,13 @@ export default function CharacteristicsForm() {
         </Button>
       </Form.Item>
       <Form.Item {...submitLayout}>
-        <Button type="primary" htmlType="submit">
+        <Button
+          type="primary"
+          htmlType="submit"
+          onClick={() => {
+            props.onDescriptionSubmit(characteristics);
+          }}
+        >
           Submit
         </Button>
       </Form.Item>

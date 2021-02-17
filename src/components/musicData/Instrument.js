@@ -1,9 +1,14 @@
 import { Select } from "antd";
+import { Instruments } from "../../musicGeneration/SongIdeaInterfaces";
 
-export default function Instrument() {
+const instruments = Object.keys(Instruments).filter((x) => !(parseInt(x) >= 0));
+
+export default function Instrument(props) {
   return (
     <Select showSearch>
-      <Select.Option value="piano">Piano</Select.Option>
+      {instruments.map((i) => (
+        <Select.Option value={i}>{i}</Select.Option>
+      ))}
     </Select>
   );
 }
