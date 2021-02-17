@@ -1,15 +1,15 @@
 import { Select } from "antd";
 
-export default function Key() {
+export default function Key(props) {
   return (
-    <Select showSearch>
-      <Select.Option value="C">C</Select.Option>
-      <Select.Option value="D">D</Select.Option>
-      <Select.Option value="E">E</Select.Option>
-      <Select.Option value="F">F</Select.Option>
-      <Select.Option value="G">G</Select.Option>
-      <Select.Option value="A">A</Select.Option>
-      <Select.Option value="B">B</Select.Option>
+    <Select showSearch onChange={props.onChange} value={props.value}>
+      <Select.Option value="c">C</Select.Option>
+      <Select.Option value="d">D</Select.Option>
+      <Select.Option value="e">E</Select.Option>
+      <Select.Option value="f">F</Select.Option>
+      <Select.Option value="g">G</Select.Option>
+      <Select.Option value="a">A</Select.Option>
+      <Select.Option value="b">B</Select.Option>
     </Select>
   );
 }
