@@ -1,10 +1,16 @@
 import { Select } from "antd";
+import { Percussion } from "../../musicGeneration/SongIdeaInterfaces";
+
+const percussion = Object.keys(Percussion).filter((x) => !(parseInt(x) >= 0));
 
 export default function DrumPowerHand(props) {
   return (
     <Select showSearch value={props.value} onChange={props.onChange}>
-      <Select.Option value="hi-hat">Hi-hat</Select.Option>
-      <Select.Option value="ride">Ride</Select.Option>
+      {percussion.map((p) => (
+        <Select.Option key={p} value={p}>
+          {p}
+        </Select.Option>
+      ))}
     </Select>
   );
 }

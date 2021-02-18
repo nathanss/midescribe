@@ -8,7 +8,9 @@ export default function NotesDuration() {
   return (
     <Select showSearch>
       {notesDurationKeys.map((n) => (
-        <Select.Option value={n}>{n}</Select.Option>
+        <Select.Option key={n} value={n}>
+          {n}
+        </Select.Option>
       ))}
     </Select>
   );

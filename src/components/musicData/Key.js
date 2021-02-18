@@ -7,7 +7,9 @@ export default function Key(props) {
   return (
     <Select showSearch onChange={props.onChange} value={props.value}>
       {keys.map((k) => (
-        <Select.Option value={k}>{k}</Select.Option>
+        <Select.Option key={k} value={k}>
+          {k}
+        </Select.Option>
       ))}
     </Select>
   );

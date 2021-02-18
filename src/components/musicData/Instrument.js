@@ -7,7 +7,9 @@ export default function Instrument(props) {
   return (
     <Select showSearch>
       {instruments.map((i) => (
-        <Select.Option value={i}>{i}</Select.Option>
+        <Select.Option key={i} value={i}>
+          {i}
+        </Select.Option>
       ))}
     </Select>
   );
