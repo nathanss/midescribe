@@ -10,12 +10,14 @@ import { NoteSequence } from "@magenta/music/es6";
 
 function Home() {
   const [showExtractedData, setShowExtractedData] = useState(false);
-  const [showPreview, setShowPreview] = useState(true);
+  const [showPreview] = useState(true);
   function onFinish() {
     setShowExtractedData(true);
   }
 
   const [sequence, setSequence] = useState(Sequence);
+
+  const [isDrum, setIsDrum] = useState(false);
 
   const layout = {
     labelCol: { span: 4 },
@@ -29,6 +31,7 @@ function Home() {
     );
     const sequence = generator.generateNoteSequence();
     setSequence(sequence);
+    setIsDrum(description.isDrum);
   };
 
   return (
@@ -62,7 +65,7 @@ function Home() {
       {showPreview && (
         <div className="site-layout-content">
           <h2>Preview</h2>
-          <Preview originalSequence={sequence} />
+          <Preview originalSequence={sequence} isDrum={isDrum} />
         </div>
       )}
     </>

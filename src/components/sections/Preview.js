@@ -19,7 +19,7 @@ let player = new SoundFontPlayer(
   "https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus"
 );
 
-export default function Preview({ originalSequence }) {
+export default function Preview({ originalSequence, isDrum }) {
   const [playing, setPlaying] = useState(false);
   const [isTrained, setIsTrained] = useState(false);
   const [sequence, setSequence] = useState(originalSequence);
@@ -34,16 +34,24 @@ export default function Preview({ originalSequence }) {
   const [showTrained, setShowTrained] = useState(false);
 
   useEffect(() => {
+    setIsTrained(false);
+    setMidime(null);
+    setMvae(null);
     const trainModel = async () => {
       const mvae = new MusicVAE(
-        "https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/mel_2bar_small"
+        isDrum
+          ? "https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/drums_2bar_lokl_small"
+          : "https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/mel_2bar_small"
       );
       await mvae.initialize();
       const midime = new MidiMe({
         epochs: 100,
       });
       await midime.initialize();
-      const quantizedMel = sequences.quantizeNoteSequence(originalSequence, 4);
+      const quantizedMel = isDrum
+        ? originalSequence
+        : sequences.quantizeNoteSequence(originalSequence, 4);
+      // for some reason it works quantizing when it is melodic but breaks when isDrum
       const z = await mvae.encode(getChunks([quantizedMel]));
       await midime.train(z, async (epoch, logs) => {
         console.log(epoch);
@@ -54,7 +62,7 @@ export default function Preview({ originalSequence }) {
       setMvae(mvae);
     };
     trainModel();
-  }, [originalSequence]);
+  }, [originalSequence, isDrum]);
 
   useEffect(() => {
     const visualizer = new PianoRollSVGVisualizer(
@@ -115,44 +123,46 @@ export default function Preview({ originalSequence }) {
 
   return (
     <div style={{ position: "relative" }}>
-      <Form>
-        <Form.Item label="Sliders">
-          <Row>
-            <Col span={6}>
-              <MidiMeSlider
-                value={sliders.slider1}
-                onAfterChange={(value) => {
-                  setSliders({ ...sliders, slider1: value });
-                }}
-              />
-            </Col>
-            <Col span={6}>
-              <MidiMeSlider
-                value={sliders.slider2}
-                onAfterChange={(value) => {
-                  setSliders({ ...sliders, slider2: value });
-                }}
-              />
-            </Col>
-            <Col span={6}>
-              <MidiMeSlider
-                value={sliders.slider3}
-                onAfterChange={(value) => {
-                  setSliders({ ...sliders, slider3: value });
-                }}
-              />
-            </Col>
-            <Col span={6}>
-              <MidiMeSlider
-                value={sliders.slider4}
-                onAfterChange={(value) => {
-                  setSliders({ ...sliders, slider4: value });
-                }}
-              />
-            </Col>
-          </Row>
-        </Form.Item>
-      </Form>
+      {showTrained && isTrained && (
+        <Form>
+          <Form.Item label="Sliders">
+            <Row>
+              <Col span={6}>
+                <MidiMeSlider
+                  value={sliders.slider1}
+                  onAfterChange={(value) => {
+                    setSliders({ ...sliders, slider1: value });
+                  }}
+                />
+              </Col>
+              <Col span={6}>
+                <MidiMeSlider
+                  value={sliders.slider2}
+                  onAfterChange={(value) => {
+                    setSliders({ ...sliders, slider2: value });
+                  }}
+                />
+              </Col>
+              <Col span={6}>
+                <MidiMeSlider
+                  value={sliders.slider3}
+                  onAfterChange={(value) => {
+                    setSliders({ ...sliders, slider3: value });
+                  }}
+                />
+              </Col>
+              <Col span={6}>
+                <MidiMeSlider
+                  value={sliders.slider4}
+                  onAfterChange={(value) => {
+                    setSliders({ ...sliders, slider4: value });
+                  }}
+                />
+              </Col>
+            </Row>
+          </Form.Item>
+        </Form>
+      )}
       <div className="visualizer-container cream">
         <Button
           className="button-circle"
