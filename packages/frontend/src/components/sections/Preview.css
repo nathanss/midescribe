@@ -1,0 +1,41 @@
+html {
+  --green: #9de5b8;
+  --blue: #23465a;
+  --cream: #def2f1;
+
+  --slider-size: 20px;
+  --thumb-size: 10px;
+}
+
+.visualizer-container {
+  overflow: auto;
+  min-height: 100px;
+}
+
+.cream {
+  background: var(--cream);
+  border: 2px solid var(--blue);
+  color: var(--blue);
+}
+
+.button-circle {
+  display: inline-block;
+  font-family: inherit;
+  font-weight: bold;
+  transition: all 0.2s linear;
+  text-align: center;
+  padding: 0;
+  margin: 0 8px;
+  border: none;
+  border-radius: 50%;
+  text-shadow: none;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  background: var(--green);
+  fill: var(--blue);
+  position: absolute;
+  top: 10px;
+  right: 0;
+}
