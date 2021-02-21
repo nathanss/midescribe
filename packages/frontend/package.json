@@ -46,5 +46,6 @@
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.1"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }
