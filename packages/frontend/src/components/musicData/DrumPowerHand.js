@@ -1,5 +1,5 @@
 import { Select } from "antd";
-import { Percussion } from "../../musicGeneration/SongIdeaInterfaces";
+import { Percussion } from "@midescribe/common";
 
 export default function DrumPowerHand(props) {
   return (

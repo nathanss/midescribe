@@ -1,5 +1,5 @@
 import { Select } from "antd";
-import { KeysArray } from "../../musicGeneration/SongIdeaInterfaces";
+import { KeysArray } from "@midescribe/common";
 
 export default function Key(props) {
   return (

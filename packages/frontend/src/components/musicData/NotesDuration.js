@@ -1,6 +1,6 @@
 import { Select } from "antd";
 
-import { NotesDuration as nd } from "../../musicGeneration/SongIdeaInterfaces";
+import { NotesDuration as nd } from "@midescribe/common";
 
 const notesDurationKeys = Object.keys(nd).filter((x) => !(parseInt(x) >= 0));
 

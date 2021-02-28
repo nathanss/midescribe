@@ -8,10 +8,7 @@ import Scale from "../musicData/Scale";
 import Tempo from "../musicData/Tempo";
 import TimeSignature from "../musicData/TimeSignature";
 import { useState } from "react";
-import {
-  Instruments,
-  SongIdeaEntryPoint,
-} from "../../musicGeneration/SongIdeaInterfaces";
+import { Instruments, SongIdeaEntryPoint } from "@midescribe/common";
 
 const layout = {
   labelCol: { span: 4 },

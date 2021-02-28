@@ -1,8 +1,10 @@
-import * as SongIdeaInterfaces from "../../frontend/src/musicGeneration/SongIdeaInterfaces";
-
 import express from "express";
 import bodyParser from "body-parser";
 import language from "@google-cloud/language";
+
+import * as Test from "@midescribe/common";
+
+Test.DEFAULT_TOTAL_TIME;
 
 require("dotenv").config();
 

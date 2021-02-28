@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "midescribe",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/nathanss/midescribe-v2.git",
+  "author": "Nathan Schneider <nathan.schneider@sap.com>",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ]
+}

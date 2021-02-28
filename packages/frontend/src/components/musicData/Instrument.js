@@ -1,5 +1,5 @@
 import { Select } from "antd";
-import { Instruments } from "../../musicGeneration/SongIdeaInterfaces";
+import { Instruments } from "@midescribe/common";
 
 const instruments = Object.keys(Instruments).filter((x) => !(parseInt(x) >= 0));
 

@@ -10,7 +10,7 @@ import {
   ScaleToValues,
   SongIdeaEntryPoint,
   TempoDescription,
-} from "./SongIdeaInterfaces";
+} from "@midescribe/common";
 type NoteSequenceCreator = (a: INoteSequence) => NoteSequence;
 
 export class SongDescriptorNoteSequenceGenerator {

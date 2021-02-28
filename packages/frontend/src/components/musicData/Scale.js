@@ -1,5 +1,5 @@
 import { Radio } from "antd";
-import { ScaleArray } from "../../musicGeneration/SongIdeaInterfaces";
+import { ScaleArray } from "@midescribe/common";
 
 export default function Scale(props) {
   return (
