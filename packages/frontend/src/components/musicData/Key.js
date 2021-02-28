@@ -1,12 +1,10 @@
 import { Select } from "antd";
-import { Keys } from "../../musicGeneration/SongIdeaInterfaces";
-
-const keys = Object.keys(Keys).filter((x) => !(parseInt(x) >= 0));
+import { KeysArray } from "../../musicGeneration/SongIdeaInterfaces";
 
 export default function Key(props) {
   return (
     <Select showSearch onChange={props.onChange} value={props.value}>
-      {keys.map((k) => (
+      {KeysArray.map((k) => (
         <Select.Option key={k} value={k}>
           {k}
         </Select.Option>

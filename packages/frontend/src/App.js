@@ -8,6 +8,12 @@ import Contact from "./pages/contact/Contact";
 
 const { Header, Content, Footer } = Layout;
 
+/* fetch("/getTextDescription", {
+  method: "POST",
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ title: 'React POST Request Example' })
+}).then(response => response.json()).then(data => console.log(data)) */
+
 function App() {
   return (
     <BrowserRouter>
