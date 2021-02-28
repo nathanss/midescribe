@@ -25,3 +25,5 @@ yarn-error.log*
 
 .env
 private-key.json
+
+dist
