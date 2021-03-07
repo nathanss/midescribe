@@ -5,7 +5,7 @@ export interface SongIdeaEntryPoint {
   key?: KeysType;
   notesDuration?: keyof typeof NotesDuration;
   instrument?: keyof typeof Instruments;
-  timeSignature: string;
+  timeSignature?: string;
   monophonic?: boolean;
   isDrum?: boolean;
   drumPowerHand?: keyof typeof Percussion;
@@ -15,6 +15,8 @@ export interface SongIdeaEntryPoint {
 
 export const ScaleArray = ["major", "minor"];
 export type ScaleType = "major" | "minor";
+
+export const BpmUnitOfMeasures = new Set().add("bpm");
 
 export const ScaleToValues = {
   major: [0, 2, 4, 5, 7, 9, 11],
@@ -93,6 +95,17 @@ export const Instruments = {
   violin: 41,
   "synth lead": 82,
   "synth pad": 89,
+  "guitar fret noise": 120,
+};
+
+export const Drums = ["drums", "drum"];
+
+export const MonophonicOrNot = {
+  melody: true,
+  monophonic: true,
+  polyphonic: false,
+  chords: false,
+  chord: false,
 };
 
 export interface TimeSignature {
