@@ -98,7 +98,7 @@ export default class MusicIdeaGenerator {
     return Instruments.hasOwnProperty(textContent);
   }
   private isDrumPart(textContent: string) {
-    return Percussion.hasOwnProperty(textContent);
+    return this.findPropertyThatStartsWIth(Percussion, textContent);
   }
   private hasMonophonicReference(textContent: string) {
     return MonophonicOrNot.hasOwnProperty(textContent);
@@ -107,12 +107,14 @@ export default class MusicIdeaGenerator {
     return Drums.includes(textContent);
   }
   private couldBeInstrument(textContent: string): any {
-    return Object.keys(Instruments).find((instrument) => {
-      return instrument.startsWith(textContent);
-    });
+    return this.findPropertyThatStartsWIth(Instruments, textContent);
   }
   private getNotesDuration(textContent: string): any {
-    return Object.keys(NotesDuration).find((noteDuration) => {
+    return this.findPropertyThatStartsWIth(NotesDuration, textContent);
+  }
+
+  private findPropertyThatStartsWIth(object: any, textContent: string) {
+    return Object.keys(object).find((noteDuration) => {
       return noteDuration.startsWith(textContent);
     });
   }

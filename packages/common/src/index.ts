@@ -73,8 +73,8 @@ export const Percussion = {
   kick: 36,
   snare: 38,
   hihat: 42,
-  "closed hihat": 42,
-  "open hihat": 46,
+  "closed hi-hat": 42,
+  "open hi-hat": 46,
   "crash cymbal": 49,
 };
 
