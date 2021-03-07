@@ -7,7 +7,7 @@ import NotesDuration from "../musicData/NotesDuration";
 import Scale from "../musicData/Scale";
 import Tempo from "../musicData/Tempo";
 import TimeSignature from "../musicData/TimeSignature";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Instruments, SongIdeaEntryPoint } from "@midescribe/common";
 
 const layout = {
@@ -29,18 +29,13 @@ const addFieldLayout = {
 };
 
 export default function CharacteristicsForm(props: any) {
-  const [characteristics, setCharacteristics] = useState<SongIdeaEntryPoint>({
-    tempo: "120",
-    scale: "major",
-    key: "d",
-    notesDuration: "quarter notes",
-    instrument: "piano",
-    timeSignature: "4:4",
-    monophonic: true,
-    isDrum: false,
-    drumPowerHand: undefined,
-    drumOpeningHit: undefined,
-  });
+  const [characteristics, setCharacteristics] = useState<SongIdeaEntryPoint>(
+    props.characteristics
+  );
+
+  useEffect(() => {
+    setCharacteristics(props.characteristics);
+  }, [props.characteristics]);
   return (
     <Form {...layout}>
       <Form.Item label="Tempo" tooltip="TODO" {...layout}>
@@ -86,11 +81,22 @@ export default function CharacteristicsForm(props: any) {
         </Row>
       </Form.Item>
       <Form.Item label="Notes duration">
-        <NotesDuration />
+        <NotesDuration
+          value={characteristics.notesDuration}
+          onChange={(notesDuration: any) => {
+            setCharacteristics({ ...characteristics, notesDuration });
+          }}
+        />
         <DeleteButton />
       </Form.Item>
       <Form.Item label="Instrument">
-        <Instrument values={Instruments} />
+        <Instrument
+          values={Instruments}
+          value={characteristics.instrument}
+          onChange={(instrument: any) => {
+            setCharacteristics({ ...characteristics, instrument });
+          }}
+        />
         <DeleteButton />
       </Form.Item>
       <Form.Item label="Time signature">

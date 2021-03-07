@@ -32,8 +32,8 @@ export class SongDescriptorNoteSequenceGenerator {
       drumLoop: properties.drumLoop || ["kick", "snare"],
       drumOpeningHit: properties.drumOpeningHit || "crash cymbal",
     };
-    const [numerator, denominator] = this.properties.timeSignature
-      .split(":")
+    const [numerator, denominator] = this.properties
+      .timeSignature!.split(":")
       .map((a) => parseInt(a, 0));
     this.timeSignature = {
       numerator: numerator || 4,

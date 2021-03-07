@@ -11,7 +11,16 @@ import { NoteSequence } from "@magenta/music/es6";
 function Home() {
   const [showExtractedData, setShowExtractedData] = useState(false);
   const [showPreview] = useState(true);
-  function onFinish() {
+  const [description, setDescription] = useState("");
+  const [characteristics, setCharacteristics] = useState(undefined);
+  async function onFinish() {
+    const musicIdeaResponse = await fetch("/generateMusicIdea", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: description }),
+    }).then((response) => response.json());
+
+    setCharacteristics(musicIdeaResponse);
     setShowExtractedData(true);
   }
 
@@ -47,7 +56,12 @@ function Home() {
               { required: true, message: "Please input your description!" },
             ]}
           >
-            <Input />
+            <Input
+              value={description}
+              onChange={(event) => {
+                setDescription(event.target.value);
+              }}
+            />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
@@ -59,7 +73,10 @@ function Home() {
       {showExtractedData && (
         <div className="site-layout-content">
           <h2>Here's what was recognized from your description</h2>
-          <CharacteristicsForm onDescriptionSubmit={onDescriptionSubmit} />
+          <CharacteristicsForm
+            characteristics={characteristics}
+            onDescriptionSubmit={onDescriptionSubmit}
+          />
         </div>
       )}
       {showPreview && (
