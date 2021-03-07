@@ -28,6 +28,7 @@ export default class MusicIdeaGenerator {
     tokens.forEach((_, index) => {
       this.visit(tokens, index, visited);
     });
+    this.musicIdea.timeSignature = "4:4";
     return this.musicIdea;
   }
 
