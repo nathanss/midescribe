@@ -1,10 +1,7 @@
 import express from "express";
+import { body, validationResult } from "express-validator";
 import bodyParser from "body-parser";
 import language from "@google-cloud/language";
-
-import * as Test from "@midescribe/common";
-
-Test.DEFAULT_TOTAL_TIME;
 
 require("dotenv").config();
 
@@ -18,7 +15,11 @@ app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
-app.post("/analyzeEntities", async (req, res) => {
+app.post("/analyzeEntities", body("text").isString(), async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const text = req.body.text;
   const client = new language.LanguageServiceClient();
   const [result] = await client.analyzeEntities({
@@ -28,10 +29,14 @@ app.post("/analyzeEntities", async (req, res) => {
     },
     encodingType: "UTF8",
   });
-  res.json(result);
+  return res.json(result);
 });
 
-app.post("/analyzeSyntax", async (req: any, res: any) => {
+app.post("/analyzeSyntax", body("text").isString(), async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const text = req.body.text;
   const client = new language.LanguageServiceClient();
   const [result] = await client.analyzeSyntax({
