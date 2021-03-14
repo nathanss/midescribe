@@ -9,6 +9,7 @@ import {
   MusicVAE,
   PianoRollSVGVisualizer,
   sequenceProtoToMidi,
+  sequences,
   SoundFontPlayer,
   tf,
 } from "@magenta/music/es6";
@@ -64,18 +65,22 @@ export default function Preview({ originalSequence, isDrum }) {
 
   useEffect(() => {
     const visualizer = new PianoRollSVGVisualizer(
-      showTrained ? sequence : originalSequence,
+      showTrained
+        ? sequences.unquantizeSequence(sequence)
+        : sequences.unquantizeSequence(originalSequence),
       document.getElementById("previewSvg"),
       {
         noteRGB: "35,70,90",
         activeNoteRGB: "157, 229, 184",
         noteHeight: 10,
-        pixelsPerTimeStep: 200,
+        pixelsPerTimeStep: 400,
         noteSpacing: 5,
       }
     );
     player.callbackObject = {
-      run: (note) => visualizer.redraw(note, true),
+      run: (note) => {
+        visualizer.redraw(note, true);
+      },
       stop: () => {
         setPlaying(false);
       },
