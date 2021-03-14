@@ -6,7 +6,6 @@ import Key from "../musicData/Key";
 import NotesDuration from "../musicData/NotesDuration";
 import Scale from "../musicData/Scale";
 import Tempo from "../musicData/Tempo";
-import TimeSignature from "../musicData/TimeSignature";
 import { useEffect, useState } from "react";
 import { Instruments, SongIdeaEntryPoint } from "@midescribe/common";
 
@@ -51,68 +50,11 @@ export default function CharacteristicsForm(props: any) {
           <DeleteButton />
         </Row>
       </Form.Item>
-      <Form.Item label="Scale">
-        <Row>
-          <Col span={23}>
-            <Scale
-              value={characteristics.scale}
-              onChange={(event: any) => {
-                setCharacteristics({
-                  ...characteristics,
-                  scale: event.target.value,
-                });
-              }}
-            />
-          </Col>
-          <DeleteButton />
-        </Row>
-      </Form.Item>
-      <Form.Item label="Key">
-        <Row>
-          <Col span={23}>
-            <Key
-              value={characteristics.key}
-              onChange={(key: any) => {
-                setCharacteristics({ ...characteristics, key });
-              }}
-            />
-          </Col>
-          <DeleteButton />
-        </Row>
-      </Form.Item>
       <Form.Item label="Notes duration">
         <NotesDuration
           value={characteristics.notesDuration}
           onChange={(notesDuration: any) => {
             setCharacteristics({ ...characteristics, notesDuration });
-          }}
-        />
-        <DeleteButton />
-      </Form.Item>
-      <Form.Item label="Instrument">
-        <Instrument
-          values={Instruments}
-          value={characteristics.instrument}
-          onChange={(instrument: any) => {
-            setCharacteristics({ ...characteristics, instrument });
-          }}
-        />
-        <DeleteButton />
-      </Form.Item>
-      <Form.Item label="Time signature">
-        <TimeSignature
-          value={characteristics.timeSignature}
-          onChange={(timeSignature: any) => {
-            setCharacteristics({ ...characteristics, timeSignature });
-          }}
-        />
-        <DeleteButton />
-      </Form.Item>
-      <Form.Item label="Monophonic">
-        <Switch
-          checked={characteristics.monophonic}
-          onChange={(monophonic) => {
-            setCharacteristics({ ...characteristics, monophonic });
           }}
         />
         <DeleteButton />
@@ -126,6 +68,17 @@ export default function CharacteristicsForm(props: any) {
         />
         <DeleteButton />
       </Form.Item>
+      {/*       {!characteristics.isDrum && (
+        <Form.Item label="Monophonic">
+          <Switch
+            checked={characteristics.monophonic}
+            onChange={(monophonic) => {
+              setCharacteristics({ ...characteristics, monophonic });
+            }}
+          />
+          <DeleteButton />
+        </Form.Item>
+      )} */}
       {characteristics.isDrum && (
         <Form.Item label="Drum power hand">
           <DrumPowerHand
@@ -137,6 +90,60 @@ export default function CharacteristicsForm(props: any) {
           <DeleteButton />
         </Form.Item>
       )}
+      {!characteristics.isDrum && (
+        <Form.Item label="Scale">
+          <Row>
+            <Col span={23}>
+              <Scale
+                value={characteristics.scale}
+                onChange={(event: any) => {
+                  setCharacteristics({
+                    ...characteristics,
+                    scale: event.target.value,
+                  });
+                }}
+              />
+            </Col>
+            <DeleteButton />
+          </Row>
+        </Form.Item>
+      )}
+      {!characteristics.isDrum && (
+        <Form.Item label="Key">
+          <Row>
+            <Col span={23}>
+              <Key
+                value={characteristics.key}
+                onChange={(key: any) => {
+                  setCharacteristics({ ...characteristics, key });
+                }}
+              />
+            </Col>
+            <DeleteButton />
+          </Row>
+        </Form.Item>
+      )}
+      {!characteristics.isDrum && (
+        <Form.Item label="Instrument">
+          <Instrument
+            values={Instruments}
+            value={characteristics.instrument}
+            onChange={(instrument: any) => {
+              setCharacteristics({ ...characteristics, instrument });
+            }}
+          />
+          <DeleteButton />
+        </Form.Item>
+      )}
+      {/*       <Form.Item label="Time signature">
+        <TimeSignature
+          value={characteristics.timeSignature}
+          onChange={(timeSignature: any) => {
+            setCharacteristics({ ...characteristics, timeSignature });
+          }}
+        />
+        <DeleteButton />
+      </Form.Item> */}
 
       <Form.Item {...addFieldLayout}>
         <Button type="dashed" block>
