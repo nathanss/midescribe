@@ -6,3 +6,12 @@
 .header {
   padding: 0;
 }
+.logo_nav {
+  padding-left: 20px;
+}
+.FooterStyle {
+  background-color: #a0ddf6;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}

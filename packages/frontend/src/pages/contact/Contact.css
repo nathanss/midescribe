@@ -1,0 +1,14 @@
+body {
+  background-color: #eff2f5;
+}
+#ContainerIlustra {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+#ContainerContact {
+  padding-top: 160px;
+  text-align: left;
+  padding-right: 180px;
+}
