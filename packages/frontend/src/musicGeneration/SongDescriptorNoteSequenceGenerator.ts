@@ -3,10 +3,13 @@ import {
   DEFAULT_TOTAL_TIME,
   DEFAULT_VELOCITY,
   EncodingType,
+  Instruments,
+  KeysArray,
   KeyToOffset,
   NotesDuration,
   Parser,
   Percussion,
+  ScaleArray,
   ScaleToValues,
   SongIdeaEntryPoint,
   TempoDescription,
@@ -23,14 +26,18 @@ export class SongDescriptorNoteSequenceGenerator {
     this.properties = {
       tempo: properties.tempo || "120",
       tempoDescription: properties.tempoDescription,
-      key: properties.key || "c",
+      key: properties.key || (this.getRandomValueFromArray(KeysArray) as any),
       timeSignature: properties.timeSignature || "4:4",
-      scale: properties.scale || "major",
-      notesDuration: properties.notesDuration || "quarter notes",
+      scale:
+        properties.scale || (this.getRandomValueFromArray(ScaleArray) as any),
+      notesDuration:
+        properties.notesDuration ||
+        this.getRandomValueFromArray(Object.keys(NotesDuration) as any),
       isDrum: properties.isDrum || false,
-      drumPowerHand: properties.drumPowerHand || "closed hihat",
+      drumPowerHand: properties.drumPowerHand || "closed hi-hat",
       drumLoop: properties.drumLoop || ["kick", "snare"],
       drumOpeningHit: properties.drumOpeningHit || "crash cymbal",
+      instrument: properties.instrument,
     };
     const [numerator, denominator] = this.properties
       .timeSignature!.split(":")
@@ -39,6 +46,10 @@ export class SongDescriptorNoteSequenceGenerator {
       numerator: numerator || 4,
       denominator: denominator || 4,
     };
+  }
+  getRandomValueFromArray<T>(array: T[]): T {
+    const i = Math.floor(Math.random() * (array.length - 1));
+    return array[i];
   }
 
   public generateNoteSequence(): INoteSequence {
@@ -87,21 +98,20 @@ export class SongDescriptorNoteSequenceGenerator {
     const offset = KeyToOffset[this.properties.key!];
     const notes: NoteSequence.INote[] = [];
 
-    let pos = 0;
-
     for (
       let startTime = 0;
       startTime < DEFAULT_TOTAL_TIME;
       startTime += NotesDuration[this.properties.notesDuration!]
     ) {
+      const randomPos = Math.floor(Math.random() * (availableNotes.length - 1));
       notes.push({
         quantizedStartStep: startTime,
         quantizedEndStep:
           startTime + NotesDuration[this.properties.notesDuration!],
-        pitch: availableNotes[pos] + offset + 60,
+        pitch: availableNotes[randomPos] + offset + 60,
         velocity: DEFAULT_VELOCITY,
+        program: Instruments[this.properties.instrument || "piano"],
       });
-      pos = (pos + 1) % availableNotes.length;
     }
 
     return notes;
@@ -120,7 +130,7 @@ export class SongDescriptorNoteSequenceGenerator {
         quantizedStartStep: startTime,
         quantizedEndStep:
           startTime + NotesDuration[this.properties.notesDuration!],
-        pitch: Percussion[this.properties.drumPowerHand!],
+        pitch: Percussion[this.properties.drumPowerHand || "closed hi-hat"],
         velocity: DEFAULT_VELOCITY,
         isDrum: true,
       });

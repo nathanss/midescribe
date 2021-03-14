@@ -10,9 +10,12 @@ import { NoteSequence } from "@magenta/music/es6";
 
 function Home() {
   const [showExtractedData, setShowExtractedData] = useState(false);
-  const [showPreview] = useState(true);
+  const [showPreview, setShowPreview] = useState(false);
   const [description, setDescription] = useState("");
-  const [characteristics, setCharacteristics] = useState(undefined);
+  const [characteristics, setCharacteristics] = useState({
+    tempo: 120,
+    timeSignature: "4:4",
+  });
   async function onFinish() {
     const musicIdeaResponse = await fetch("/generateMusicIdea", {
       method: "POST",
@@ -41,6 +44,11 @@ function Home() {
     const sequence = generator.generateNoteSequence();
     setSequence(sequence);
     setIsDrum(description.isDrum);
+    setShowPreview(true);
+  };
+
+  const onFillManuallyClick = () => {
+    setShowExtractedData(true);
   };
 
   return (
@@ -66,6 +74,9 @@ function Home() {
           <Form.Item>
             <Button type="primary" htmlType="submit">
               Submit
+            </Button>
+            <Button type="default" onClick={onFillManuallyClick}>
+              Fill manually
             </Button>
           </Form.Item>
         </Form>

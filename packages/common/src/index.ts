@@ -91,11 +91,10 @@ export const TempoDescription = {
 export const Instruments = {
   piano: 1,
   "electric guitar": 30,
-  bass: 34,
+  bass: 33,
   violin: 41,
-  "synth lead": 82,
+  "synth lead": 81,
   "synth pad": 89,
-  "guitar fret noise": 120,
 };
 
 export const Drums = ["drums", "drum"];

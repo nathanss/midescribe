@@ -4,13 +4,11 @@ import { useEffect, useState } from "react";
 import "./Preview.css";
 import { PlayCircleOutlined, StopOutlined } from "@ant-design/icons";
 import MidiMeSlider from "../musicData/MidiMeSlider";
-import { getChunks } from "./helpers";
 import {
   MidiMe,
   MusicVAE,
   PianoRollSVGVisualizer,
   sequenceProtoToMidi,
-  sequences,
   SoundFontPlayer,
   tf,
 } from "@magenta/music/es6";
@@ -37,6 +35,9 @@ export default function Preview({ originalSequence, isDrum }) {
     setIsTrained(false);
     setMidime(null);
     setMvae(null);
+    if (originalSequence.notes.length === 0) {
+      return;
+    }
     const trainModel = async () => {
       const mvae = new MusicVAE(
         isDrum
@@ -48,11 +49,8 @@ export default function Preview({ originalSequence, isDrum }) {
         epochs: 100,
       });
       await midime.initialize();
-      const quantizedMel = isDrum
-        ? originalSequence
-        : sequences.quantizeNoteSequence(originalSequence, 4);
       // for some reason it works quantizing when it is melodic but breaks when isDrum
-      const z = await mvae.encode(getChunks([quantizedMel]));
+      const z = await mvae.encode([originalSequence]);
       await midime.train(z, async (epoch, logs) => {
         console.log(epoch);
         console.log(logs);
@@ -85,6 +83,15 @@ export default function Preview({ originalSequence, isDrum }) {
   }, [sequence, originalSequence, showTrained]);
 
   useEffect(() => {
+    const addMetadataToSampleDecoded = (sampleDecoded) => {
+      if (!isDrum && originalSequence.notes && originalSequence.notes[0]) {
+        const originalProgram = originalSequence.notes[0].program;
+        sampleDecoded.notes.forEach((note) => {
+          note.program = originalProgram;
+        });
+      }
+      sampleDecoded.tempos = originalSequence.tempos;
+    };
     async function decode() {
       if (!mvae || !midime) {
         return;
@@ -97,10 +104,18 @@ export default function Preview({ originalSequence, isDrum }) {
       ];
       const sample = await midime.decode(tf.tensor(zFrom4Sliders, [1, 4]));
       const sampleDecoded = (await mvae.decode(sample))[0];
+      addMetadataToSampleDecoded(sampleDecoded);
       setSequence(sampleDecoded);
     }
     decode();
-  }, [sliders, mvae, midime]);
+  }, [
+    sliders,
+    mvae,
+    midime,
+    isDrum,
+    originalSequence.notes,
+    originalSequence.tempos,
+  ]);
 
   function onPlayStopClick() {
     if (!playing) {
