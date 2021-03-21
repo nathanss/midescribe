@@ -1,6 +1,0 @@
-{
-  "root": "packages/frontend/build/",
-  "routes": {
-    "/**": "index.html"
-  }
-}
