@@ -8,5 +8,8 @@
   "license": "MIT",
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "build": "yarn workspace midescribe-frontend build"
+  }
 }
