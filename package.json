@@ -10,6 +10,6 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspace midescribe-frontend build"
+    "build": "yarn workspace @midescribe/common build && yarn workspace @midescribe/frontend build"
   }
 }
