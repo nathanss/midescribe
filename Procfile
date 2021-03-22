@@ -1,1 +1,1 @@
-web: yarn workspace midescribe-frontend node server.js
+web: yarn workspace @midescribe/frontend node server.js
