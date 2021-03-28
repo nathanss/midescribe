@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { useState } from "react";
 import CharacteristicsForm from "../../components/sections/CharacteristicsForm";
 import Preview from "../../components/sections/Preview";
@@ -19,19 +19,28 @@ function Home() {
     timeSignature: "4:4",
   });
   async function onFinish() {
-    const musicIdeaResponse = await fetch(backendEndpointUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: description }),
-    }).then((response) => response.json());
+    try {
+      setRequestOngoing(true);
+      const musicIdeaResponse = await fetch(backendEndpointUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: description }),
+      }).then((response) => response.json());
 
-    setCharacteristics(musicIdeaResponse);
-    setShowExtractedData(true);
+      setCharacteristics(musicIdeaResponse);
+      setShowExtractedData(true);
+      setRequestOngoing(false);
+    } catch (e) {
+      setRequestOngoing(false);
+      message.error(
+        "Something went wrong while communicating with back-end.\nPlease press the Fill manually button."
+      );
+    }
   }
 
   const [sequence, setSequence] = useState(Sequence);
-
   const [isDrum, setIsDrum] = useState(false);
+  const [requestOngoing, setRequestOngoing] = useState(false);
 
   const layout = {
     labelCol: { span: 4 },
@@ -67,6 +76,7 @@ function Home() {
             ]}
           >
             <Input
+              disabled={requestOngoing}
               value={description}
               onChange={(event) => {
                 setDescription(event.target.value);
@@ -74,10 +84,14 @@ function Home() {
             />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" disabled={requestOngoing}>
               Submit
             </Button>
-            <Button type="default" onClick={onFillManuallyClick}>
+            <Button
+              type="default"
+              onClick={onFillManuallyClick}
+              disabled={requestOngoing}
+            >
               Fill manually
             </Button>
           </Form.Item>
