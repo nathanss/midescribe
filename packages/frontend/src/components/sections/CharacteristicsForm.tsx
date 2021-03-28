@@ -212,7 +212,7 @@ export default function CharacteristicsForm(props: any) {
               setAddFieldModalOpen(true);
             }}
           >
-            Add field
+            Add fields
           </Button>
         </Form.Item>
         <Form.Item {...submitLayout}>
@@ -229,6 +229,7 @@ export default function CharacteristicsForm(props: any) {
       </Form>
       <Modal
         visible={addFieldModalOpen}
+        title="Add fields"
         onCancel={() => {
           setAddFieldModalOpen(false);
         }}
