@@ -12,6 +12,10 @@
   "scripts": {
     "start:fe": "yarn workspace @midescribe/frontend start",
     "start:be": "yarn workspace @midescribe/backend start",
+    "start": "concurrently \"yarn workspace @midescribe/frontend start\" \"yarn workspace @midescribe/backend start\" ",
     "build": "yarn workspace @midescribe/common build && yarn workspace @midescribe/frontend build && yarn workspace @midescribe/backend build"
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.0"
   }
 }
