@@ -13,6 +13,8 @@ import {
   SoundFontPlayer,
   tf,
 } from "@magenta/music/es6";
+import { DEFAULT_VELOCITY } from "@midescribe/common";
+import Modal from "antd/lib/modal/Modal";
 
 let player = new SoundFontPlayer(
   "https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus"
@@ -31,6 +33,8 @@ export default function Preview({ originalSequence, isDrum }) {
   const [midime, setMidime] = useState(null);
   const [mvae, setMvae] = useState(null);
   const [showTrained, setShowTrained] = useState(false);
+
+  const [exportModalOpen, setExportModelOpen] = useState(false);
 
   useEffect(() => {
     setIsTrained(false);
@@ -133,10 +137,13 @@ export default function Preview({ originalSequence, isDrum }) {
   }
 
   function onExportClick() {
+    sequence.notes.forEach((note) => {
+      note.velocity = DEFAULT_VELOCITY;
+    });
     saveAs(
       new File(
         [sequenceProtoToMidi(showTrained ? sequence : originalSequence)],
-        "sample.mid"
+        "music idea.mid"
       )
     );
   }
@@ -211,6 +218,7 @@ export default function Preview({ originalSequence, isDrum }) {
       </div>
 
       <Button onClick={onExportClick}>Export</Button>
+      <Modal visible={exportModalOpen}></Modal>
     </div>
   );
 }
