@@ -14,11 +14,12 @@ import {
   tf,
 } from "@magenta/music/es6";
 import { DEFAULT_VELOCITY } from "@midescribe/common";
-import Modal from "antd/lib/modal/Modal";
 
 let player = new SoundFontPlayer(
   "https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus"
 );
+
+const N_EPOCHS = 100;
 
 export default function Preview({ originalSequence, isDrum }) {
   const [playing, setPlaying] = useState(false);
@@ -33,8 +34,7 @@ export default function Preview({ originalSequence, isDrum }) {
   const [midime, setMidime] = useState(null);
   const [mvae, setMvae] = useState(null);
   const [showTrained, setShowTrained] = useState(false);
-
-  const [exportModalOpen, setExportModelOpen] = useState(false);
+  const [currentEpoch, setCurrentEpoch] = useState(0);
 
   useEffect(() => {
     setIsTrained(false);
@@ -51,14 +51,13 @@ export default function Preview({ originalSequence, isDrum }) {
       );
       await mvae.initialize();
       const midime = new MidiMe({
-        epochs: 100,
+        epochs: N_EPOCHS,
       });
       await midime.initialize();
       // for some reason it works quantizing when it is melodic but breaks when isDrum
       const z = await mvae.encode([originalSequence]);
       await midime.train(z, async (epoch, logs) => {
-        console.log(epoch);
-        console.log(logs);
+        setCurrentEpoch(epoch);
       });
       setIsTrained(true);
       setMidime(midime);
@@ -153,7 +152,9 @@ export default function Preview({ originalSequence, isDrum }) {
       <div>
         {!isTrained && (
           <div>
-            <p>Training the model</p>
+            <p>
+              Training the model. Step {currentEpoch} out of {N_EPOCHS}
+            </p>
           </div>
         )}
         {isTrained && (
@@ -218,7 +219,6 @@ export default function Preview({ originalSequence, isDrum }) {
       </div>
 
       <Button onClick={onExportClick}>Export</Button>
-      <Modal visible={exportModalOpen}></Modal>
     </div>
   );
 }
