@@ -143,6 +143,24 @@ export default function Preview({ originalSequence, isDrum }) {
 
   return (
     <div style={{ position: "relative" }}>
+      <div>
+        {!isTrained && (
+          <div>
+            <p>Training the model</p>
+          </div>
+        )}
+        {isTrained && (
+          <Radio.Group
+            onChange={(e) => {
+              setShowTrained(e.target.value);
+            }}
+            value={showTrained}
+          >
+            <Radio value={false}>Original</Radio>
+            <Radio value={true}>Trained</Radio>
+          </Radio.Group>
+        )}
+      </div>
       {showTrained && isTrained && (
         <Form>
           <Form.Item label="Sliders">
@@ -190,24 +208,6 @@ export default function Preview({ originalSequence, isDrum }) {
           onClick={onPlayStopClick}
         />
         <svg id="previewSvg"></svg>
-      </div>
-      <div>
-        {!isTrained && (
-          <div>
-            <p>Training the model</p>
-          </div>
-        )}
-        {isTrained && (
-          <Radio.Group
-            onChange={(e) => {
-              setShowTrained(e.target.value);
-            }}
-            value={showTrained}
-          >
-            <Radio value={false}>Original</Radio>
-            <Radio value={true}>Trained</Radio>
-          </Radio.Group>
-        )}
       </div>
 
       <Button onClick={onExportClick}>Export</Button>
