@@ -13,6 +13,16 @@ export interface SongIdeaEntryPoint {
   drumOpeningHit?: keyof typeof Percussion;
 }
 
+export const SongIdeaProperties: Array<keyof SongIdeaEntryPoint> = [
+  "tempo",
+  "scale",
+  "key",
+  "notesDuration",
+  "instrument",
+  "isDrum",
+  "drumPowerHand",
+];
+
 export const ScaleArray = ["major", "minor"];
 export type ScaleType = "major" | "minor";
 

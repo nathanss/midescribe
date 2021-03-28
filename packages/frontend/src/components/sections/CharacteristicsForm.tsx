@@ -1,4 +1,4 @@
-import { Button, Col, Form, Row, Switch } from "antd";
+import { Button, Col, Form, Row, Switch, Table } from "antd";
 import DeleteButton from "../DeleteButton";
 import DrumPowerHand from "../musicData/DrumPowerHand";
 import Instrument from "../musicData/Instrument";
@@ -7,7 +7,12 @@ import NotesDuration from "../musicData/NotesDuration";
 import Scale from "../musicData/Scale";
 import Tempo from "../musicData/Tempo";
 import { useEffect, useState } from "react";
-import { Instruments, SongIdeaEntryPoint } from "@midescribe/common";
+import {
+  Instruments,
+  SongIdeaEntryPoint,
+  SongIdeaProperties,
+} from "@midescribe/common";
+import Modal from "antd/lib/modal/Modal";
 
 const layout = {
   labelCol: { span: 4 },
@@ -32,110 +37,164 @@ export default function CharacteristicsForm(props: any) {
     props.characteristics
   );
 
+  const [addFieldModalOpen, setAddFieldModalOpen] = useState<boolean>(false);
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState<Array<any>>([]);
+
+  const removeCharacteristic = (name: keyof SongIdeaEntryPoint) => {
+    setCharacteristics({ ...characteristics, [name]: undefined });
+  };
+
+  const getDescription = (prop: string) => prop;
+
+  const onAddFieldModalOk = () => {
+    setAddFieldModalOpen(false);
+    const newCharacteristics: any = {};
+    selectedRowKeys.forEach((key: keyof SongIdeaEntryPoint) => {
+      newCharacteristics[key] = "";
+    });
+    setCharacteristics({ ...characteristics, ...newCharacteristics });
+  };
+
   useEffect(() => {
     setCharacteristics(props.characteristics);
   }, [props.characteristics]);
+
+  const notSelectedData = SongIdeaProperties.filter(
+    (prop) => characteristics[prop] === undefined
+  ).map((prop) => {
+    return { key: prop, property: prop, description: getDescription(prop) };
+  });
   return (
-    <Form {...layout}>
-      <Form.Item label="Tempo" tooltip="TODO" {...layout}>
-        <Row>
-          <Col span={23}>
-            <Tempo
-              value={characteristics.tempo}
-              onAfterChange={(tempo: any) => {
-                setCharacteristics({ ...characteristics, tempo });
+    <>
+      <Form {...layout}>
+        {characteristics.tempo !== undefined && (
+          <Form.Item label="Tempo" tooltip="TODO" {...layout}>
+            <Row>
+              <Col span={23}>
+                <Tempo
+                  value={characteristics.tempo}
+                  onAfterChange={(tempo: any) => {
+                    setCharacteristics({ ...characteristics, tempo });
+                  }}
+                />
+              </Col>
+              <DeleteButton
+                onDeleteClicked={() => {
+                  removeCharacteristic("tempo");
+                }}
+              />
+            </Row>
+          </Form.Item>
+        )}
+        {characteristics.isDrum !== undefined && (
+          <Form.Item label="Is drum beat">
+            <Switch
+              checked={characteristics.isDrum}
+              onChange={(isDrum) => {
+                setCharacteristics({ ...characteristics, isDrum });
               }}
             />
-          </Col>
-          <DeleteButton />
-        </Row>
-      </Form.Item>
-      <Form.Item label="Notes duration">
-        <NotesDuration
-          value={characteristics.notesDuration}
-          onChange={(notesDuration: any) => {
-            setCharacteristics({ ...characteristics, notesDuration });
-          }}
-        />
-        <DeleteButton />
-      </Form.Item>
-      <Form.Item label="Is drum beat">
-        <Switch
-          checked={characteristics.isDrum}
-          onChange={(isDrum) => {
-            setCharacteristics({ ...characteristics, isDrum });
-          }}
-        />
-        <DeleteButton />
-      </Form.Item>
-      {/*       {!characteristics.isDrum && (
-        <Form.Item label="Monophonic">
-          <Switch
-            checked={characteristics.monophonic}
-            onChange={(monophonic) => {
-              setCharacteristics({ ...characteristics, monophonic });
-            }}
-          />
-          <DeleteButton />
-        </Form.Item>
-      )} */}
-      {characteristics.isDrum && (
-        <Form.Item label="Drum power hand">
-          <DrumPowerHand
-            value={characteristics.drumPowerHand}
-            onChange={(drumPowerHand: any) => {
-              setCharacteristics({ ...characteristics, drumPowerHand });
-            }}
-          />
-          <DeleteButton />
-        </Form.Item>
-      )}
-      {!characteristics.isDrum && (
-        <Form.Item label="Scale">
-          <Row>
-            <Col span={23}>
-              <Scale
-                value={characteristics.scale}
-                onChange={(event: any) => {
-                  setCharacteristics({
-                    ...characteristics,
-                    scale: event.target.value,
-                  });
+            <DeleteButton
+              onDeleteClicked={() => {
+                setCharacteristics({
+                  ...characteristics,
+                  isDrum: undefined,
+                  drumPowerHand: undefined,
+                });
+              }}
+            />
+          </Form.Item>
+        )}
+        {characteristics.isDrum !== undefined &&
+          characteristics.drumPowerHand !== undefined && (
+            <Form.Item label="Drum power hand">
+              <DrumPowerHand
+                value={characteristics.drumPowerHand}
+                onChange={(drumPowerHand: any) => {
+                  setCharacteristics({ ...characteristics, drumPowerHand });
                 }}
               />
-            </Col>
-            <DeleteButton />
-          </Row>
-        </Form.Item>
-      )}
-      {!characteristics.isDrum && (
-        <Form.Item label="Key">
-          <Row>
-            <Col span={23}>
-              <Key
-                value={characteristics.key}
-                onChange={(key: any) => {
-                  setCharacteristics({ ...characteristics, key });
+              <DeleteButton
+                onDeleteClicked={() => {
+                  removeCharacteristic("drumPowerHand");
                 }}
               />
-            </Col>
-            <DeleteButton />
-          </Row>
-        </Form.Item>
-      )}
-      {!characteristics.isDrum && (
-        <Form.Item label="Instrument">
-          <Instrument
-            values={Instruments}
-            value={characteristics.instrument}
-            onChange={(instrument: any) => {
-              setCharacteristics({ ...characteristics, instrument });
-            }}
-          />
-          <DeleteButton />
-        </Form.Item>
-      )}
-      {/*       <Form.Item label="Time signature">
+            </Form.Item>
+          )}
+        {characteristics.notesDuration !== undefined && (
+          <Form.Item label="Notes duration">
+            <NotesDuration
+              value={characteristics.notesDuration}
+              onChange={(notesDuration: any) => {
+                setCharacteristics({ ...characteristics, notesDuration });
+              }}
+            />
+            <DeleteButton
+              onDeleteClicked={() => {
+                removeCharacteristic("notesDuration");
+              }}
+            />
+          </Form.Item>
+        )}
+        {!characteristics.isDrum && characteristics.scale !== undefined && (
+          <Form.Item label="Scale">
+            <Row>
+              <Col span={23}>
+                <Scale
+                  value={characteristics.scale}
+                  onChange={(event: any) => {
+                    setCharacteristics({
+                      ...characteristics,
+                      scale: event.target.value,
+                    });
+                  }}
+                />
+              </Col>
+              <DeleteButton
+                onDeleteClicked={() => {
+                  removeCharacteristic("scale");
+                }}
+              />
+            </Row>
+          </Form.Item>
+        )}
+        {!characteristics.isDrum && characteristics.key !== undefined && (
+          <Form.Item label="Key">
+            <Row>
+              <Col span={23}>
+                <Key
+                  value={characteristics.key}
+                  onChange={(key: any) => {
+                    setCharacteristics({ ...characteristics, key });
+                  }}
+                />
+              </Col>
+              <DeleteButton
+                onDeleteClicked={() => {
+                  removeCharacteristic("key");
+                }}
+              />
+            </Row>
+          </Form.Item>
+        )}
+        {!characteristics.isDrum && characteristics.instrument !== undefined && (
+          <Form.Item label="Instrument">
+            <Instrument
+              values={Instruments}
+              value={characteristics.instrument}
+              onChange={(instrument: any) => {
+                setCharacteristics({ ...characteristics, instrument });
+              }}
+            />
+            <DeleteButton
+              onDeleteClicked={() => {
+                removeCharacteristic("instrument");
+              }}
+            />
+          </Form.Item>
+        )}
+        {/*       <Form.Item label="Time signature">
         <TimeSignature
           value={characteristics.timeSignature}
           onChange={(timeSignature: any) => {
@@ -145,22 +204,58 @@ export default function CharacteristicsForm(props: any) {
         <DeleteButton />
       </Form.Item> */}
 
-      <Form.Item {...addFieldLayout}>
-        <Button type="dashed" block>
-          Add field
-        </Button>
-      </Form.Item>
-      <Form.Item {...submitLayout}>
-        <Button
-          type="primary"
-          htmlType="submit"
-          onClick={() => {
-            props.onDescriptionSubmit(characteristics);
+        <Form.Item {...addFieldLayout}>
+          <Button
+            type="dashed"
+            block
+            onClick={() => {
+              setAddFieldModalOpen(true);
+            }}
+          >
+            Add field
+          </Button>
+        </Form.Item>
+        <Form.Item {...submitLayout}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            onClick={() => {
+              props.onDescriptionSubmit(characteristics);
+            }}
+          >
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+      <Modal
+        visible={addFieldModalOpen}
+        onCancel={() => {
+          setAddFieldModalOpen(false);
+        }}
+        onOk={onAddFieldModalOk}
+        destroyOnClose={true}
+      >
+        <Table
+          rowSelection={{
+            type: "checkbox",
+            onChange: (selectedRowKeys) => {
+              setSelectedRowKeys(selectedRowKeys);
+            },
           }}
-        >
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
+          pagination={false}
+          columns={[
+            {
+              title: "Property",
+              dataIndex: "property",
+            },
+            {
+              title: "Description",
+              dataIndex: "description",
+            },
+          ]}
+          dataSource={notSelectedData}
+        ></Table>
+      </Modal>
+    </>
   );
 }
