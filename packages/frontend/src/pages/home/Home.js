@@ -3,10 +3,12 @@ import { useState } from "react";
 import CharacteristicsForm from "../../components/sections/CharacteristicsForm";
 import Preview from "../../components/sections/Preview";
 import "./Home.css";
-
 import { Sequence } from "../../constants/Sequences";
 import { SongDescriptorNoteSequenceGenerator } from "../../musicGeneration/SongDescriptorNoteSequenceGenerator";
 import { NoteSequence } from "@magenta/music/es6";
+
+const backendEndpointUrl =
+  process.env.REACT_APP_BACKEND_DESTINATION + "/generateMusicIdea";
 
 function Home() {
   const [showExtractedData, setShowExtractedData] = useState(false);
@@ -17,7 +19,7 @@ function Home() {
     timeSignature: "4:4",
   });
   async function onFinish() {
-    const musicIdeaResponse = await fetch("/generateMusicIdea", {
+    const musicIdeaResponse = await fetch(backendEndpointUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text: description }),

@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { body, validationResult } from "express-validator";
 import bodyParser from "body-parser";
 import language from "@google-cloud/language";
@@ -9,6 +10,12 @@ require("dotenv").config();
 const PORT = process.env.PORT || 3001;
 
 const app = express();
+
+app.use(
+  cors({
+    origin: process.env.ORIGIN || false,
+  })
+);
 
 app.use(bodyParser.json());
 

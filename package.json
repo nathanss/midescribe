@@ -10,6 +10,8 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspace @midescribe/common build && yarn workspace @midescribe/frontend build"
+    "start:fe": "yarn workspace @midescribe/frontend start",
+    "start:be": "yarn workspace @midescribe/backend start",
+    "build": "yarn workspace @midescribe/common build && yarn workspace @midescribe/frontend build && yarn workspace @midescribe/backend build"
   }
 }

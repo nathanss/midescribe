@@ -32,9 +32,11 @@ function App() {
           <Route exact path="/howtouse" component={HowToUse} />
           <Route exact path="/contact" component={Contact} />
         </Content>
-        {/* <Footer style={{ textAlign: "center" }} className="FooterStyle">
-          Footer
-        </Footer> */}
+        {
+          <Footer style={{ textAlign: "center" }} className="FooterStyle">
+            Footer
+          </Footer>
+        }
       </Layout>
     </BrowserRouter>
   );
