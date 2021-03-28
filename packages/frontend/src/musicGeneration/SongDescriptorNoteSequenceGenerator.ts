@@ -37,7 +37,9 @@ export class SongDescriptorNoteSequenceGenerator {
       drumPowerHand: properties.drumPowerHand || "closed hi-hat",
       drumLoop: properties.drumLoop || ["kick", "snare"],
       drumOpeningHit: properties.drumOpeningHit || "crash cymbal",
-      instrument: properties.instrument,
+      instrument:
+        properties.instrument ||
+        this.getRandomValueFromArray(Object.keys(Instruments) as any),
     };
     const [numerator, denominator] = this.properties
       .timeSignature!.split(":")
