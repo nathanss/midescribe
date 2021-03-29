@@ -1,0 +1,21 @@
+.ContainerHTU-ilus {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.ContainerHTU {
+  padding-top: 160px;
+  text-align: left;
+  padding-right: 180px;
+}
+
+.ContainerHTU2 {
+  padding-top: 160px;
+  text-align: right;
+  padding-left: 180px;
+}
+.ButtonHTU {
+  margin-top: 20px;
+  border-radius: 12px;
+}

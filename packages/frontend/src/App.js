@@ -14,8 +14,13 @@ function App() {
     <BrowserRouter>
       <Layout>
         <Header className="header">
-          <Menu theme="light" mode="horizontal" defaultSelectedKeys={["home"]}>
-            <img src={Logo} alt="" className="logo_nav" />
+          <Menu
+            theme="light"
+            mode="horizontal"
+            className="menuItem"
+            defaultSelectedKeys={["home"]}
+          >
+            <img src={Logo} alt="" id="logo_nav" />
             <Menu.Item key="home">
               <Link to="/">Home</Link>
             </Menu.Item>
