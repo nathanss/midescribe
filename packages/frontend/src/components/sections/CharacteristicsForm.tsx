@@ -13,6 +13,7 @@ import {
   SongIdeaProperties,
 } from "@midescribe/common";
 import Modal from "antd/lib/modal/Modal";
+import { SongIdeaPropertiesDescription } from "@midescribe/common";
 
 const layout = {
   labelCol: { span: 4 },
@@ -45,7 +46,9 @@ export default function CharacteristicsForm(props: any) {
     setCharacteristics({ ...characteristics, [name]: undefined });
   };
 
-  const getDescription = (prop: string) => prop;
+  const getDescription = (prop: keyof SongIdeaEntryPoint) => {
+    return SongIdeaPropertiesDescription[prop] || prop;
+  };
 
   const onAddFieldModalOk = () => {
     setAddFieldModalOpen(false);
@@ -165,8 +168,11 @@ export default function CharacteristicsForm(props: any) {
               <Col span={23}>
                 <Key
                   value={characteristics.key}
-                  onChange={(key: any) => {
-                    setCharacteristics({ ...characteristics, key });
+                  onChange={(event: any) => {
+                    setCharacteristics({
+                      ...characteristics,
+                      key: event.target.value,
+                    });
                   }}
                 />
               </Col>
@@ -204,17 +210,19 @@ export default function CharacteristicsForm(props: any) {
         <DeleteButton />
       </Form.Item> */}
 
-        <Form.Item {...addFieldLayout}>
-          <Button
-            type="dashed"
-            block
-            onClick={() => {
-              setAddFieldModalOpen(true);
-            }}
-          >
-            Add fields
-          </Button>
-        </Form.Item>
+        {notSelectedData.length > 0 && (
+          <Form.Item {...addFieldLayout}>
+            <Button
+              type="dashed"
+              block
+              onClick={() => {
+                setAddFieldModalOpen(true);
+              }}
+            >
+              Add fields
+            </Button>
+          </Form.Item>
+        )}
         <Form.Item {...submitLayout}>
           <Button
             type="primary"
