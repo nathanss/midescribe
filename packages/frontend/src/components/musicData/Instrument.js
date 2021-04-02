@@ -8,7 +8,13 @@ export default function Instrument(props) {
     <Select showSearch value={props.value} onChange={props.onChange}>
       {instruments.map((i) => (
         <Select.Option key={i} value={i}>
-          {i}
+          <span
+            style={{
+              "text-transform": "capitalize",
+            }}
+          >
+            {i}
+          </span>
         </Select.Option>
       ))}
     </Select>

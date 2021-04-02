@@ -23,15 +23,50 @@ export const SongIdeaProperties: Array<keyof SongIdeaEntryPoint> = [
   "drumPowerHand",
 ];
 
-export const ScaleArray = ["major", "minor"];
-export type ScaleType = "major" | "minor";
+export const SongIdeaPropertiesDescription: Partial<
+  Record<keyof SongIdeaEntryPoint, string>
+> = {
+  tempo: "Tempo (BPM)",
+  scale: "Scale  (e.g. C#)",
+  key: "Key (e.g. Major)",
+  notesDuration:
+    "The duration that you want most of your notes to be in (e.g. quarter notes)",
+  instrument:
+    "The instrument you want to be played in Preview and imbued in the MIDI data (e.g. piano)",
+  isDrum: "Whether the part is a drum beat or not",
+  drumPowerHand:
+    "In what part the beat is conducted (tipically hi-hat or ride)",
+};
+
+export const ScaleArray = [
+  "major",
+  "minor",
+  "harmonic minor",
+  "melodic minor",
+  "chromatic",
+  "major pentatonic",
+  "minor pentatonic",
+];
+export type ScaleType =
+  | "major"
+  | "minor"
+  | "harmonic minor"
+  | "melodic minor"
+  | "chromatic"
+  | "major pentatonic"
+  | "minor pentatonic";
 
 export const BpmUnitOfMeasures = new Set().add("bpm");
 
-export const ScaleToValues = {
+export const ScaleToValues: Record<ScaleType | "undefined", number[]> = {
   major: [0, 2, 4, 5, 7, 9, 11],
   minor: [0, 2, 3, 5, 7, 9, 10],
-  undefined: [0, 2, 4, 5, 7, 9, 11],
+  "harmonic minor": [0, 2, 3, 5, 7, 8, 11, 12],
+  "melodic minor": [0, 2, 3, 5, 7, 9, 11, 12],
+  chromatic: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  "major pentatonic": [0, 2, 4, 7, 9, 12],
+  "minor pentatonic": [0, 3, 5, 7, 10, 12],
+  undefined: [0, 2, 4, 5, 7, 9, 11, 12],
 };
 
 export const KeysArray = [

@@ -1,14 +1,20 @@
-import { Select } from "antd";
+import { Radio } from "antd";
 import { KeysArray } from "@midescribe/common";
 
 export default function Key(props) {
   return (
-    <Select showSearch onChange={props.onChange} value={props.value}>
-      {KeysArray.map((k) => (
-        <Select.Option key={k} value={k}>
-          {k}
-        </Select.Option>
+    <Radio.Group value={props.value} onChange={props.onChange}>
+      {KeysArray.map((s) => (
+        <Radio key={s} value={s}>
+          <span
+            style={{
+              "text-transform": "capitalize",
+            }}
+          >
+            {s}
+          </span>
+        </Radio>
       ))}
-    </Select>
+    </Radio.Group>
   );
 }
