@@ -19,12 +19,15 @@ type NoteSequenceCreator = (a: INoteSequence) => NoteSequence;
 export class SongDescriptorNoteSequenceGenerator {
   private properties: SongIdeaEntryPoint;
   private timeSignature: { numerator: number; denominator: number };
+  private readonly MIN_TEMPO = 100;
+  private readonly MAX_TEMPO = 200;
+
   constructor(
     properties: SongIdeaEntryPoint,
     private noteSequenceCreator: NoteSequenceCreator
   ) {
     this.properties = {
-      tempo: properties.tempo || "120",
+      tempo: properties.tempo || this.pickRandomTempo(),
       tempoDescription: properties.tempoDescription,
       key: properties.key || (this.getRandomValueFromArray(KeysArray) as any),
       timeSignature: properties.timeSignature || "4:4",
@@ -49,9 +52,15 @@ export class SongDescriptorNoteSequenceGenerator {
       denominator: denominator || 4,
     };
   }
-  getRandomValueFromArray<T>(array: T[]): T {
+  private getRandomValueFromArray<T>(array: T[]): T {
     const i = Math.floor(Math.random() * (array.length - 1));
     return array[i];
+  }
+  private pickRandomTempo() {
+    let tempo =
+      this.MIN_TEMPO +
+      Math.floor((this.MAX_TEMPO - this.MIN_TEMPO) * Math.random());
+    return tempo.toString();
   }
 
   public generateNoteSequence(): INoteSequence {
