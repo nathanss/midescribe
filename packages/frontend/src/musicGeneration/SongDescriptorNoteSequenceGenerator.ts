@@ -121,7 +121,8 @@ export class SongDescriptorNoteSequenceGenerator {
           startTime + NotesDuration[this.properties.notesDuration!],
         pitch: availableNotes[randomPos] + offset + 60,
         velocity: DEFAULT_VELOCITY,
-        program: Instruments[this.properties.instrument || "piano"],
+        program:
+          Instruments[this.properties.instrument || "acoustic grand piano"],
       });
     }
 
