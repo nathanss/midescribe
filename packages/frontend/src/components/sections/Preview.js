@@ -157,56 +157,64 @@ export default function Preview({ originalSequence, isDrum }) {
             </p>
           </div>
         )}
-        {isTrained && (
-          <Radio.Group
-            onChange={(e) => {
-              setShowTrained(e.target.value);
-            }}
-            value={showTrained}
-          >
-            <Radio value={false}>Original</Radio>
-            <Radio value={true}>Trained</Radio>
-          </Radio.Group>
-        )}
       </div>
-      {showTrained && isTrained && (
+      {isTrained && (
         <Form>
-          <Form.Item label="Sliders">
-            <Row>
-              <Col span={6}>
-                <MidiMeSlider
-                  value={sliders.slider1}
-                  onAfterChange={(value) => {
-                    setSliders({ ...sliders, slider1: value });
-                  }}
-                />
-              </Col>
-              <Col span={6}>
-                <MidiMeSlider
-                  value={sliders.slider2}
-                  onAfterChange={(value) => {
-                    setSliders({ ...sliders, slider2: value });
-                  }}
-                />
-              </Col>
-              <Col span={6}>
-                <MidiMeSlider
-                  value={sliders.slider3}
-                  onAfterChange={(value) => {
-                    setSliders({ ...sliders, slider3: value });
-                  }}
-                />
-              </Col>
-              <Col span={6}>
-                <MidiMeSlider
-                  value={sliders.slider4}
-                  onAfterChange={(value) => {
-                    setSliders({ ...sliders, slider4: value });
-                  }}
-                />
-              </Col>
-            </Row>
+          <Form.Item
+            label="Source"
+            tooltip="Toggle between the original generated sample or variations through the trained machine learning model"
+          >
+            <Radio.Group
+              onChange={(e) => {
+                setShowTrained(e.target.value);
+              }}
+              value={showTrained}
+            >
+              <Radio value={false}>Original</Radio>
+              <Radio value={true}>Variations</Radio>
+            </Radio.Group>
           </Form.Item>
+          {showTrained && (
+            <Form.Item
+              label="Sliders"
+              tooltip="You can tweak these four sliders from -1 to 1 to get variations of the generated sound"
+            >
+              <Row>
+                <Col span={6}>
+                  <MidiMeSlider
+                    value={sliders.slider1}
+                    onAfterChange={(value) => {
+                      setSliders({ ...sliders, slider1: value });
+                    }}
+                  />
+                </Col>
+                <Col span={6}>
+                  <MidiMeSlider
+                    value={sliders.slider2}
+                    onAfterChange={(value) => {
+                      setSliders({ ...sliders, slider2: value });
+                    }}
+                  />
+                </Col>
+                <Col span={6}>
+                  <MidiMeSlider
+                    value={sliders.slider3}
+                    onAfterChange={(value) => {
+                      setSliders({ ...sliders, slider3: value });
+                    }}
+                  />
+                </Col>
+                <Col span={6}>
+                  <MidiMeSlider
+                    value={sliders.slider4}
+                    onAfterChange={(value) => {
+                      setSliders({ ...sliders, slider4: value });
+                    }}
+                  />
+                </Col>
+              </Row>
+            </Form.Item>
+          )}
         </Form>
       )}
       <div className="visualizer-container cream">
