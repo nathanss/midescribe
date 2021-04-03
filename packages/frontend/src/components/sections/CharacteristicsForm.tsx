@@ -8,6 +8,7 @@ import Scale from "../musicData/Scale";
 import Tempo from "../musicData/Tempo";
 import { useEffect, useState } from "react";
 import {
+  DefaultValues,
   Instruments,
   SongIdeaEntryPoint,
   SongIdeaProperties,
@@ -54,7 +55,7 @@ export default function CharacteristicsForm(props: any) {
     setAddFieldModalOpen(false);
     const newCharacteristics: any = {};
     selectedRowKeys.forEach((key: keyof SongIdeaEntryPoint) => {
-      newCharacteristics[key] = "";
+      newCharacteristics[key] = DefaultValues[key];
     });
     setCharacteristics({ ...characteristics, ...newCharacteristics });
   };
@@ -72,7 +73,11 @@ export default function CharacteristicsForm(props: any) {
     <>
       <Form {...layout}>
         {characteristics.tempo !== undefined && (
-          <Form.Item label="Tempo" tooltip="TODO" {...layout}>
+          <Form.Item
+            label="Tempo"
+            tooltip={getDescription("tempo")}
+            {...layout}
+          >
             <Row>
               <Col span={23}>
                 <Tempo
@@ -91,7 +96,7 @@ export default function CharacteristicsForm(props: any) {
           </Form.Item>
         )}
         {characteristics.isDrum !== undefined && (
-          <Form.Item label="Is drum beat">
+          <Form.Item label="Is drum beat" tooltip={getDescription("isDrum")}>
             <Switch
               checked={characteristics.isDrum}
               onChange={(isDrum) => {
@@ -109,24 +114,29 @@ export default function CharacteristicsForm(props: any) {
             />
           </Form.Item>
         )}
-        {characteristics.isDrum !== undefined &&
-          characteristics.drumPowerHand !== undefined && (
-            <Form.Item label="Drum power hand">
-              <DrumPowerHand
-                value={characteristics.drumPowerHand}
-                onChange={(drumPowerHand: any) => {
-                  setCharacteristics({ ...characteristics, drumPowerHand });
-                }}
-              />
-              <DeleteButton
-                onDeleteClicked={() => {
-                  removeCharacteristic("drumPowerHand");
-                }}
-              />
-            </Form.Item>
-          )}
+        {characteristics.isDrum && characteristics.drumPowerHand !== undefined && (
+          <Form.Item
+            label="Drum power hand"
+            tooltip={getDescription("drumPowerHand")}
+          >
+            <DrumPowerHand
+              value={characteristics.drumPowerHand}
+              onChange={(drumPowerHand: any) => {
+                setCharacteristics({ ...characteristics, drumPowerHand });
+              }}
+            />
+            <DeleteButton
+              onDeleteClicked={() => {
+                removeCharacteristic("drumPowerHand");
+              }}
+            />
+          </Form.Item>
+        )}
         {characteristics.notesDuration !== undefined && (
-          <Form.Item label="Notes duration">
+          <Form.Item
+            label="Notes duration"
+            tooltip={getDescription("notesDuration")}
+          >
             <NotesDuration
               value={characteristics.notesDuration}
               onChange={(notesDuration: any) => {
@@ -185,7 +195,7 @@ export default function CharacteristicsForm(props: any) {
           </Form.Item>
         )}
         {!characteristics.isDrum && characteristics.instrument !== undefined && (
-          <Form.Item label="Instrument">
+          <Form.Item label="Instrument" tooltip={getDescription("instrument")}>
             <Instrument
               values={Instruments}
               value={characteristics.instrument}
@@ -200,16 +210,6 @@ export default function CharacteristicsForm(props: any) {
             />
           </Form.Item>
         )}
-        {/*       <Form.Item label="Time signature">
-        <TimeSignature
-          value={characteristics.timeSignature}
-          onChange={(timeSignature: any) => {
-            setCharacteristics({ ...characteristics, timeSignature });
-          }}
-        />
-        <DeleteButton />
-      </Form.Item> */}
-
         {notSelectedData.length > 0 && (
           <Form.Item {...addFieldLayout}>
             <Button

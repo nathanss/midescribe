@@ -8,7 +8,7 @@ export default function Key(props) {
         <Radio key={s} value={s}>
           <span
             style={{
-              "text-transform": "capitalize",
+              textTransform: "capitalize",
             }}
           >
             {s}

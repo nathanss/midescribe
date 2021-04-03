@@ -9,7 +9,7 @@ export default function NotesDuration(props) {
     <Select showSearch value={props.value} onChange={props.onChange}>
       {notesDurationKeys.map((n) => (
         <Select.Option key={n} value={n}>
-          {n}
+          <span style={{ textTransform: "capitalize" }}>{n}</span>
         </Select.Option>
       ))}
     </Select>

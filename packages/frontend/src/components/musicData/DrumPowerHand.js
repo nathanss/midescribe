@@ -6,7 +6,7 @@ export default function DrumPowerHand(props) {
     <Select showSearch value={props.value} onChange={props.onChange}>
       {Object.keys(Percussion).map((p) => (
         <Select.Option key={p} value={p}>
-          {p}
+          <span style={{ textTransform: "capitalize" }}>{p}</span>
         </Select.Option>
       ))}
     </Select>

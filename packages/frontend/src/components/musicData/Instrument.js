@@ -10,7 +10,7 @@ export default function Instrument(props) {
         <Select.Option key={i} value={i}>
           <span
             style={{
-              "text-transform": "capitalize",
+              textTransform: "capitalize",
             }}
           >
             {i}

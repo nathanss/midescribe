@@ -13,6 +13,21 @@ export interface SongIdeaEntryPoint {
   drumOpeningHit?: keyof typeof Percussion;
 }
 
+export const DefaultValues: Record<keyof SongIdeaEntryPoint, any> = {
+  tempo: "120",
+  scale: "",
+  key: "",
+  notesDuration: "",
+  instrument: "",
+  isDrum: false,
+  drumPowerHand: false,
+  tempoDescription: "",
+  timeSignature: "4:4",
+  monophonic: false,
+  drumLoop: [],
+  drumOpeningHit: "",
+};
+
 export const SongIdeaProperties: Array<keyof SongIdeaEntryPoint> = [
   "tempo",
   "scale",
@@ -27,8 +42,8 @@ export const SongIdeaPropertiesDescription: Partial<
   Record<keyof SongIdeaEntryPoint, string>
 > = {
   tempo: "Tempo (BPM)",
-  scale: "Scale  (e.g. C#)",
-  key: "Key (e.g. Major)",
+  scale: "Scale",
+  key: "Key (e.g. C#)",
   notesDuration:
     "The duration that you want most of your notes to be in (e.g. quarter notes)",
   instrument:
@@ -135,7 +150,15 @@ export const TempoDescription = {
 
 export const Instruments = {
   piano: 1,
-  "electric guitar": 30,
+  "overdriven guitar": 30,
+  "distortion guitar": 31,
+  harpsichord: 7,
+  clavichord: 8,
+  organ: 17,
+  banjo: 106,
+  "synth drum": 119,
+  "acoustic guitar": 26,
+  "string ensemble 1": 49,
   bass: 33,
   violin: 41,
   "synth lead": 81,
