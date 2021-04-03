@@ -66,20 +66,34 @@ export default class MusicIdeaGenerator {
     } else if (this.getNotesDuration(textContent)) {
       const notesDuration = this.getNotesDuration(textContent);
       this.musicIdea.notesDuration = notesDuration;
-    } else if (this.couldBeInstrument(textContent)) {
+    } else if (this.getInstrumentThroughSubstring(textContent)) {
+      let instrumentNameBestEffort = this.getInstrumentThroughSubstring(
+        textContent
+      );
+      let instrument = instrumentNameBestEffort;
       let possibleInstrument = textContent;
-      let instrument = this.getInstrument(textContent);
-      let offset = index + 1;
-      while (!instrument && offset < tokens.length) {
-        possibleInstrument += ` ${tokens[offset].text?.content}`;
-        instrument = this.getInstrument(possibleInstrument);
+      let offset = index;
+      while (offset + 1 < tokens.length) {
+        possibleInstrument += ` ${tokens[offset + 1].text?.content}`;
+        let hasExactInstrument = this.hasExactInstrument(possibleInstrument);
+        if (hasExactInstrument) {
+          instrument = possibleInstrument;
+          offset++;
+          break;
+        }
+        let test2 = this.getInstrumentThroughSubstring(possibleInstrument);
+        if (test2) {
+          instrument = test2;
+        } else {
+          break;
+        }
         offset++;
       }
       if (instrument) {
-        for (let i = index + 1; i < offset; i++) {
+        for (let i = index + 1; i <= offset; i++) {
           visited.add(i);
         }
-        this.musicIdea.instrument = possibleInstrument as any;
+        this.musicIdea.instrument = instrument;
       }
     } else if (this.getIsDrum(textContent)) {
       this.musicIdea.instrument = undefined;
@@ -95,11 +109,11 @@ export default class MusicIdeaGenerator {
       this.musicIdea.drumLoop.push(textContent as any);
     } //missing opening hit and power hand
   }
-  getInstrument(textContent: string) {
+  private hasExactInstrument(textContent: string) {
     return Instruments.hasOwnProperty(textContent);
   }
   private isDrumPart(textContent: string) {
-    return this.findPropertyThatStartsWIth(Percussion, textContent);
+    return this.findPropertyThatStartsWith(Percussion, textContent);
   }
   private hasMonophonicReference(textContent: string) {
     return MonophonicOrNot.hasOwnProperty(textContent);
@@ -107,14 +121,16 @@ export default class MusicIdeaGenerator {
   private getIsDrum(textContent: string) {
     return Drums.includes(textContent);
   }
-  private couldBeInstrument(textContent: string): any {
-    return this.findPropertyThatStartsWIth(Instruments, textContent);
+  private getInstrumentThroughSubstring(textContent: string): any {
+    return Object.keys(Instruments).find(
+      (instrument) => instrument.search(textContent) !== -1
+    );
   }
   private getNotesDuration(textContent: string): any {
-    return this.findPropertyThatStartsWIth(NotesDuration, textContent);
+    return this.findPropertyThatStartsWith(NotesDuration, textContent);
   }
 
-  private findPropertyThatStartsWIth(object: any, textContent: string) {
+  private findPropertyThatStartsWith(object: any, textContent: string) {
     return Object.keys(object).find((noteDuration) => {
       return noteDuration.startsWith(textContent);
     });
@@ -130,6 +146,6 @@ export default class MusicIdeaGenerator {
   }
 
   private isNumeric(token: google.cloud.language.v1.IToken) {
-    return token.partOfSpeech?.tag === "NUM";
+    return !isNaN(parseInt(token.text?.content || ""));
   }
 }
