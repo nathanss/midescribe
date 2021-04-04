@@ -115,19 +115,20 @@ export default class MusicIdeaGenerator {
 
     let count = index + 1;
     let newTextContent = textContent;
+    let newTextContentAux = newTextContent;
     while (
       (instrumentPartialMatchesAux.length > 0 ||
         percussionPartialMatchesAux.length > 0) &&
       count < tokens.length
     ) {
-      newTextContent += " " + tokens[count].text?.content;
+      newTextContentAux += " " + tokens[count].text?.content;
       instrumentPartialMatchesAux = this.getPartialMatches(
         Instruments,
-        newTextContent
+        newTextContentAux
       );
       percussionPartialMatchesAux = this.getPartialMatches(
         Percussion,
-        newTextContent
+        newTextContentAux
       );
       if (
         instrumentPartialMatchesAux.length === 0 &&
@@ -137,9 +138,11 @@ export default class MusicIdeaGenerator {
       } else if (instrumentPartialMatchesAux.length > 0) {
         instrumentPartialMatches = instrumentPartialMatchesAux;
         percussionPartialMatches = [];
+        newTextContent = newTextContentAux;
       } else if (percussionPartialMatchesAux.length > 0) {
         percussionPartialMatches = percussionPartialMatchesAux;
         instrumentPartialMatches = [];
+        newTextContent = newTextContentAux;
       }
       count++;
     }
