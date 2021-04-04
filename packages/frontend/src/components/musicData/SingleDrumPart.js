@@ -1,7 +1,7 @@
 import { Select } from "antd";
 import { Percussion } from "@midescribe/common";
 
-export default function DrumPowerHand(props) {
+export default function SingleDrumPart(props) {
   return (
     <Select showSearch value={props.value} onChange={props.onChange}>
       {Object.keys(Percussion).map((p) => (

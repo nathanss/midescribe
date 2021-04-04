@@ -36,6 +36,8 @@ export const SongIdeaProperties: Array<keyof SongIdeaEntryPoint> = [
   "instrument",
   "isDrum",
   "drumPowerHand",
+  "drumLoop",
+  "drumOpeningHit",
 ];
 
 export const SongIdeaPropertiesDescription: Partial<
@@ -51,6 +53,8 @@ export const SongIdeaPropertiesDescription: Partial<
   isDrum: "Whether the part is a drum beat or not",
   drumPowerHand:
     "In what part the beat is conducted (tipically hi-hat or ride)",
+  drumLoop: "The drum parts that will be played (in a loop) during the beat",
+  drumOpeningHit: "The drum part that is played at the beginning",
 };
 
 export const ScaleArray = [

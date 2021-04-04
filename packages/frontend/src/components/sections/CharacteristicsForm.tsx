@@ -1,11 +1,12 @@
 import { Button, Col, Form, Row, Switch, Table } from "antd";
 import DeleteButton from "../DeleteButton";
-import DrumPowerHand from "../musicData/DrumPowerHand";
+import SingleDrumPart from "../musicData/SingleDrumPart";
 import Instrument from "../musicData/Instrument";
 import Key from "../musicData/Key";
 import NotesDuration from "../musicData/NotesDuration";
 import Scale from "../musicData/Scale";
 import Tempo from "../musicData/Tempo";
+import DrumLoop from "../musicData/DrumLoop";
 import { useEffect, useState } from "react";
 import {
   DefaultValues,
@@ -114,12 +115,27 @@ export default function CharacteristicsForm(props: any) {
             />
           </Form.Item>
         )}
+        {characteristics.isDrum && characteristics.drumLoop !== undefined && (
+          <Form.Item label="Drum loop" tooltip={getDescription("drumLoop")}>
+            <DrumLoop
+              value={characteristics.drumLoop}
+              onChange={(drumLoop: any) => {
+                setCharacteristics({ ...characteristics, drumLoop });
+              }}
+            />
+            <DeleteButton
+              onDeleteClicked={() => {
+                removeCharacteristic("drumLoop");
+              }}
+            />
+          </Form.Item>
+        )}
         {characteristics.isDrum && characteristics.drumPowerHand !== undefined && (
           <Form.Item
             label="Drum power hand"
             tooltip={getDescription("drumPowerHand")}
           >
-            <DrumPowerHand
+            <SingleDrumPart
               value={characteristics.drumPowerHand}
               onChange={(drumPowerHand: any) => {
                 setCharacteristics({ ...characteristics, drumPowerHand });
@@ -132,6 +148,25 @@ export default function CharacteristicsForm(props: any) {
             />
           </Form.Item>
         )}
+        {characteristics.isDrum &&
+          characteristics.drumOpeningHit !== undefined && (
+            <Form.Item
+              label="Drum opening hit"
+              tooltip={getDescription("drumOpeningHit")}
+            >
+              <SingleDrumPart
+                value={characteristics.drumOpeningHit}
+                onChange={(drumOpeningHit: any) => {
+                  setCharacteristics({ ...characteristics, drumOpeningHit });
+                }}
+              />
+              <DeleteButton
+                onDeleteClicked={() => {
+                  removeCharacteristic("drumOpeningHit");
+                }}
+              />
+            </Form.Item>
+          )}
         {characteristics.notesDuration !== undefined && (
           <Form.Item
             label="Notes duration"
