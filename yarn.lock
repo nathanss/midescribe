@@ -2013,6 +2013,13 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
+"@types/natural@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@types/natural/-/natural-2.1.1.tgz#761232e1518d7ecb551af63c53e65709de09d8d3"
+  integrity sha512-FsDESOG70ni89e6DFZHMVvqRWrQWB8H2ad8+10qUAIGA5JX1td0NfSM/qyO4KQVkqOne/8+tNeLTDiDZsH9Dkg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/node-fetch@^2.1.2":
   version "2.5.8"
   resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.5.8.tgz#e199c835d234c7eb0846f6618012e558544ee2fb"
