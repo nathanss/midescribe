@@ -9,6 +9,7 @@
 #logo_nav {
   position: absolute;
   left: 3%;
+  border-bottom: 0;
 }
 .FooterStyle {
   background-color: #a0ddf6;

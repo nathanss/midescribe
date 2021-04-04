@@ -20,7 +20,11 @@ function App() {
             className="menuItem"
             defaultSelectedKeys={["home"]}
           >
-            <img src={Logo} alt="" id="logo_nav" />
+            <Menu.Item key="home" id="logo_nav">
+              <Link to="/" key="home">
+                <img src={Logo} alt="" />
+              </Link>
+            </Menu.Item>
             <Menu.Item key="home">
               <Link to="/">Home</Link>
             </Menu.Item>
