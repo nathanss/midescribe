@@ -9,8 +9,6 @@ import {
   KeysType,
   NotesDuration,
   Instruments,
-  Drums,
-  MonophonicOrNot,
   Percussion,
 } from "@midescribe/common";
 import { LevenshteinDistance } from "natural";
@@ -68,85 +66,124 @@ export default class MusicIdeaGenerator {
       const notesDuration = this.getNotesDuration(textContent);
       this.musicIdea.notesDuration = notesDuration;
     } else {
-      let instrumentPartialMatches = this.getPartialMatches(
-        Instruments,
-        textContent
-      );
-      let percussionPartialMatches = this.getPartialMatches(
-        Percussion,
-        textContent
-      );
-
-      let instrumentPartialMatchesAux = instrumentPartialMatches;
-      let percussionPartialMatchesAux = percussionPartialMatches;
-
-      let count = index + 1;
-      let newTextContent = textContent;
-      while (
-        (instrumentPartialMatchesAux.length > 0 ||
-          percussionPartialMatchesAux.length > 0) &&
-        count < tokens.length
-      ) {
-        newTextContent += " " + tokens[count].text?.content;
-        instrumentPartialMatchesAux = this.getPartialMatches(
-          Instruments,
-          newTextContent
-        );
-        percussionPartialMatchesAux = this.getPartialMatches(
-          Percussion,
-          newTextContent
-        );
-        if (
-          instrumentPartialMatchesAux.length === 0 &&
-          percussionPartialMatchesAux.length === 0
-        ) {
-          break;
-        } else if (instrumentPartialMatchesAux.length > 0) {
-          instrumentPartialMatches = instrumentPartialMatchesAux;
-          percussionPartialMatches = [];
-        } else if (percussionPartialMatchesAux.length > 0) {
-          percussionPartialMatches = percussionPartialMatchesAux;
-          instrumentPartialMatches = [];
-        }
-        count++;
-      }
-      this.markLookaheadVisited(
-        newTextContent.split(" ").length - 1,
-        visited,
-        index
-      );
-      if (
-        instrumentPartialMatches.length > 0 &&
-        percussionPartialMatches.length > 0
-      ) {
-        const [instrument, instrumentMatch] = this.getBetterMatch(
-          instrumentPartialMatches,
-          newTextContent
-        );
-        const [percussion, percussionMatch] = this.getBetterMatch(
-          percussionPartialMatches,
-          newTextContent
-        );
-        if (percussionMatch <= instrumentMatch) {
-          this.addDrumLoop(percussion);
-        } else {
-          this.addInstrument(instrument);
-        }
-      } else if (instrumentPartialMatches.length > 0) {
-        const [instrument] = this.getBetterMatch(
-          instrumentPartialMatches,
-          newTextContent
-        );
-        this.addInstrument(instrument);
-      } else if (percussionPartialMatches.length > 0) {
-        const [percussion] = this.getBetterMatch(
-          percussionPartialMatches,
-          newTextContent
-        );
-        this.addDrumLoop(percussion);
-      }
+      this.handleInstrumentsAndPercussion(textContent, tokens, index, visited);
     }
   }
+  private handleInstrumentsAndPercussion(
+    textContent: string,
+    tokens: google.cloud.language.v1.IToken[],
+    index: number,
+    visited: Set<number>
+  ) {
+    const [
+      newTextContent,
+      instrumentPartialMatches,
+      percussionPartialMatches,
+    ] = this.getInstrumentAndPercussionPartialMatches(
+      textContent,
+      index,
+      tokens
+    );
+    this.markLookaheadVisited(
+      newTextContent.split(" ").length - 1,
+      visited,
+      index
+    );
+    this.addInstrumentOrPercussionBestMatch(
+      instrumentPartialMatches,
+      percussionPartialMatches,
+      newTextContent
+    );
+  }
+
+  private getInstrumentAndPercussionPartialMatches(
+    textContent: string,
+    index: number,
+    tokens: google.cloud.language.v1.IToken[]
+  ) {
+    let instrumentPartialMatches = this.getPartialMatches(
+      Instruments,
+      textContent
+    );
+    let percussionPartialMatches = this.getPartialMatches(
+      Percussion,
+      textContent
+    );
+
+    let instrumentPartialMatchesAux = instrumentPartialMatches;
+    let percussionPartialMatchesAux = percussionPartialMatches;
+
+    let count = index + 1;
+    let newTextContent = textContent;
+    while (
+      (instrumentPartialMatchesAux.length > 0 ||
+        percussionPartialMatchesAux.length > 0) &&
+      count < tokens.length
+    ) {
+      newTextContent += " " + tokens[count].text?.content;
+      instrumentPartialMatchesAux = this.getPartialMatches(
+        Instruments,
+        newTextContent
+      );
+      percussionPartialMatchesAux = this.getPartialMatches(
+        Percussion,
+        newTextContent
+      );
+      if (
+        instrumentPartialMatchesAux.length === 0 &&
+        percussionPartialMatchesAux.length === 0
+      ) {
+        break;
+      } else if (instrumentPartialMatchesAux.length > 0) {
+        instrumentPartialMatches = instrumentPartialMatchesAux;
+        percussionPartialMatches = [];
+      } else if (percussionPartialMatchesAux.length > 0) {
+        percussionPartialMatches = percussionPartialMatchesAux;
+        instrumentPartialMatches = [];
+      }
+      count++;
+    }
+
+    return [newTextContent, instrumentPartialMatches, percussionPartialMatches];
+  }
+
+  private addInstrumentOrPercussionBestMatch(
+    instrumentPartialMatches: any,
+    percussionPartialMatches: any,
+    newTextContent: string
+  ) {
+    if (
+      instrumentPartialMatches.length > 0 &&
+      percussionPartialMatches.length > 0
+    ) {
+      const [instrument, instrumentMatch] = this.getBetterMatch(
+        instrumentPartialMatches,
+        newTextContent
+      );
+      const [percussion, percussionMatch] = this.getBetterMatch(
+        percussionPartialMatches,
+        newTextContent
+      );
+      if (percussionMatch <= instrumentMatch) {
+        this.addDrumLoop(percussion);
+      } else {
+        this.addInstrument(instrument);
+      }
+    } else if (instrumentPartialMatches.length > 0) {
+      const [instrument] = this.getBetterMatch(
+        instrumentPartialMatches,
+        newTextContent
+      );
+      this.addInstrument(instrument);
+    } else if (percussionPartialMatches.length > 0) {
+      const [percussion] = this.getBetterMatch(
+        percussionPartialMatches,
+        newTextContent
+      );
+      this.addDrumLoop(percussion);
+    }
+  }
+
   private addInstrument(instrument: any) {
     this.musicIdea.instrument = instrument;
   }
