@@ -10,7 +10,8 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-validator": "^6.10.0"
+    "express-validator": "^6.10.0",
+    "natural": "^5.0.3"
   },
   "scripts": {
     "build": "tsc",

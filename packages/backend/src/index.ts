@@ -42,20 +42,3 @@ app.post("/generateMusicIdea", body("text").isString(), async (req, res) => {
   );
   return res.json(musicIdea);
 });
-
-app.post("/analyzeSyntax", body("text").isString(), async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  const text = req.body.text;
-  const client = new language.LanguageServiceClient();
-  const [result] = await client.analyzeSyntax({
-    document: {
-      content: text,
-      type: "PLAIN_TEXT",
-    },
-    encodingType: "UTF8",
-  });
-  return res.json(result);
-});

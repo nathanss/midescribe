@@ -131,11 +131,22 @@ export const KeyToOffset = {
 
 export const Percussion = {
   kick: 36,
+  "bass drum": 36,
+  "side stick": 37,
   snare: 38,
+  "hand clap": 39,
+  "low floor tom": 41,
   hihat: 42,
+  "hi-hat": 42,
   "closed hi-hat": 42,
+  "low tom": 45,
   "open hi-hat": 46,
+  "low-mid tom": 47,
+  "hi-mid tom": 48,
   "crash cymbal": 49,
+  "high tom": 50,
+  "ride cymbal": 51,
+  "ride bell": 53,
 };
 
 export const NotesDuration = {
@@ -176,7 +187,7 @@ export const Instruments = {
   "tango accordion": 23,
   "acoustic guitar nylon": 24,
   "acoustic guitar steel": 25,
-  "electric guitarr jazz": 26,
+  "electric guitar jazz": 26,
   "electric guitar clean": 27,
   "electric guitar muted": 28,
   "overdriven guitar": 29,

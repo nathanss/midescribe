@@ -66,65 +66,83 @@ export default class MusicIdeaGenerator {
     } else if (this.getNotesDuration(textContent)) {
       const notesDuration = this.getNotesDuration(textContent);
       this.musicIdea.notesDuration = notesDuration;
-    } else if (this.getInstrumentThroughSubstring(textContent)) {
-      let instrumentNameBestEffort = this.getInstrumentThroughSubstring(
+    } else {
+      let instrumentPartialMatches = this.getPartialMatches(
+        Instruments,
         textContent
       );
-      let instrument = instrumentNameBestEffort;
-      let possibleInstrument = textContent;
-      let offset = index;
-      while (offset + 1 < tokens.length) {
-        possibleInstrument += ` ${tokens[offset + 1].text?.content}`;
-        let hasExactInstrument = this.hasExactInstrument(possibleInstrument);
-        if (hasExactInstrument) {
-          instrument = possibleInstrument;
-          offset++;
+      let percussionPartialMatches = this.getPartialMatches(
+        Percussion,
+        textContent
+      );
+
+      let instrumentPartialMatches2 = instrumentPartialMatches;
+      let percussionPartialMatches2 = percussionPartialMatches;
+
+      let count = index + 1;
+      let newTextContent = textContent;
+      while (
+        (instrumentPartialMatches2.length > 0 ||
+          percussionPartialMatches2.length > 0) &&
+        count < tokens.length
+      ) {
+        newTextContent += " " + tokens[count].text?.content;
+        instrumentPartialMatches2 = this.getPartialMatches(
+          Instruments,
+          newTextContent
+        );
+        percussionPartialMatches2 = this.getPartialMatches(
+          Percussion,
+          newTextContent
+        );
+        if (
+          instrumentPartialMatches2.length === 0 &&
+          percussionPartialMatches2.length === 0
+        ) {
           break;
+        } else if (instrumentPartialMatches2.length > 0) {
+          instrumentPartialMatches = instrumentPartialMatches2;
+          percussionPartialMatches = [];
+        } else if (percussionPartialMatches2.length > 0) {
+          percussionPartialMatches = percussionPartialMatches2;
+          instrumentPartialMatches = [];
         }
-        let test2 = this.getInstrumentThroughSubstring(possibleInstrument);
-        if (test2) {
-          instrument = test2;
-        } else {
-          break;
+        count++;
+      }
+
+      if (instrumentPartialMatches.length > 0) {
+        this.musicIdea.instrument = instrumentPartialMatches[0];
+        this.markLookaheadVisited(
+          instrumentPartialMatches[0].split(" ").length - 1,
+          visited,
+          index
+        );
+      } else if (percussionPartialMatches.length > 0) {
+        this.musicIdea.isDrum = true;
+        this.musicIdea.instrument = undefined;
+        if (!this.musicIdea.drumLoop) {
+          this.musicIdea.drumLoop = [];
         }
-        offset++;
+        this.musicIdea.drumLoop.push(percussionPartialMatches[0]);
+        this.markLookaheadVisited(
+          percussionPartialMatches[0].split(" ").length - 1,
+          visited,
+          index
+        );
       }
-      if (instrument) {
-        for (let i = index + 1; i <= offset; i++) {
-          visited.add(i);
-        }
-        this.musicIdea.instrument = instrument;
-      }
-    } else if (this.getIsDrum(textContent)) {
-      this.musicIdea.instrument = undefined;
-      this.musicIdea.isDrum = true;
-    } else if (this.hasMonophonicReference(textContent)) {
-      this.musicIdea.monophonic = (MonophonicOrNot as any)[textContent];
-    } else if (this.isDrumPart(textContent)) {
-      this.musicIdea.instrument = undefined;
-      this.musicIdea.isDrum = true;
-      if (!this.musicIdea.drumLoop) {
-        this.musicIdea.drumLoop = [];
-      }
-      this.musicIdea.drumLoop.push(textContent as any);
-    } //missing opening hit and power hand
+    }
   }
-  private hasExactInstrument(textContent: string) {
-    return Instruments.hasOwnProperty(textContent);
+  markLookaheadVisited(length: number, visited: Set<number>, index: number) {
+    for (let i = 1; i <= length; i++) {
+      visited.add(index + i);
+    }
   }
-  private isDrumPart(textContent: string) {
-    return this.findPropertyThatStartsWith(Percussion, textContent);
-  }
+
   private hasMonophonicReference(textContent: string) {
     return MonophonicOrNot.hasOwnProperty(textContent);
   }
-  private getIsDrum(textContent: string) {
-    return Drums.includes(textContent);
-  }
-  private getInstrumentThroughSubstring(textContent: string): any {
-    return Object.keys(Instruments).find(
-      (instrument) => instrument.search(textContent) !== -1
-    );
+  private getPartialMatches(object: any, textContent: string): any {
+    return Object.keys(object).filter((key) => key.search(textContent) !== -1);
   }
   private getNotesDuration(textContent: string): any {
     return this.findPropertyThatStartsWith(NotesDuration, textContent);
