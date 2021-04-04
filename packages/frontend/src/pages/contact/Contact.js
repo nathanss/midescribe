@@ -16,10 +16,23 @@ function Contact() {
           <Col span={12} id="ContainerContact">
             <Title level={1}>Hi, I'm Nathan!</Title>
             <Text type="primary">
-              Description: Lorem ipsum dolor sit amet, consectetur adipiscing
-              elit. Quisque ultricies mollis efficitur. Suspendisse at erat
-              bibendum, sollicitudin tellus et, volutpat ipsum. Nullam
-              consectetur felis.
+              I am a computer science student and hobyist musician: that means I
+              spend most of my time in front of a computer.
+              <br />
+              <br />
+              Why is that, you ask? Because, like most musicians from all levels
+              of expertise nowadays, I have been relying on computers to aid me
+              in music creation. This help comes in many forms, like virtual
+              instruments, or recording software. It's all quite new, really,
+              and we are still figuring it out.
+              <br />
+              <br />I hope you like this small experiment. May it inspire you
+              into creating something that perhaps you wouldn't have thought by
+              yourself, or even lead you out of a block. As a musician, even
+              with all the technology in the world, you are still at the
+              steering wheel. This is just another tool.
+              <br />
+              <br /> Glory to mankind.
             </Text>
             <p />
             <hr />
@@ -28,34 +41,8 @@ function Contact() {
             <br />
             <p />
             <Text type="primary" className="textstyle">
-              <strong>E-mail:</strong> email@gmai.com
+              <strong>E-mail:</strong> nsschneider1@gmail.com
             </Text>
-            <br />
-            <p />
-            <Text type="primary" className="textstyle">
-              <strong>Telephone</strong> (51) 99999-9999
-            </Text>
-            <br />
-            <p />
-            <Text type="primary" className="textstyle">
-              <strong>Address:</strong>
-            </Text>
-            <br />
-            <iframe
-              width="520"
-              title="location-google-maps"
-              height="209"
-              frameborder="0"
-              scrolling="no"
-              marginheight="0"
-              marginwidth="0"
-              id="gmap_canvas"
-              src="https://maps.google.com/maps?width=520&amp;height=209&amp;hl=en&amp;q=Rua%20Felipe%20dos%20Santos,%20padre%20reus%20S%C3%A3o%20Leopoldo+()&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-            ></iframe>
-            <script
-              type="text/javascript"
-              src="https://embedmaps.com/google-maps-authorization/script.js?id=d6cf1ee5588e4479d4055023c35ee9ec1c955e3a"
-            ></script>
           </Col>
         </Row>
       </Content>

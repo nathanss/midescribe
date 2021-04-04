@@ -15,49 +15,58 @@ function HowToUse() {
             <img src={ilustraAbout} alt="" />
           </Col>
           <Col span={12} className="ContainerHTU">
-            <Title> How to use Midiscribe!</Title>
-            <Title level={2}>1. Lorem Ipsum</Title>
+            <Title> How to use MIDescribe!</Title>
             <Text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-              euismod neque et dignissim pharetra. Etiam semper ut lacus a
-              facilisis. Mauris eu nibh molestie, sollicitudin turpis dictum,
-              pellentesque urna.Donec vel nulla dictum, aliquam ante id, porta
-              ex. Etiam suscipit porttitor lorem, ut convallis orci sodales ut.
-              Maecenas nisl lectus, maximus id eros eu, dapibus molestie ante.
-              Sed posuere molestie nulla, nec luctus odio mattis ut. Cras
-              feugiat eget turpis at egestas.
+              MIDescribe is a tool to help you write music that uses natural
+              language processing and machine learning. You can afterwards
+              export your music idea as a MIDI file and take it wherever you
+              want.
             </Text>
-            <Title level={2}>2. Lorem Ipsum</Title>
+            <Title level={2}>1. Fill in your song description</Title>
             <Text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-              euismod neque et dignissim pharetra. Etiam semper ut lacus a
-              facilisis. Mauris eu nibh molestie, sollicitudin turpis dictum,
-              pellentesque urna.Donec vel nulla dictum, aliquam ante id, porta
-              ex.
+              There are several characteristics that you can inform in this free
+              text field, such as:
+              <ul>
+                <li>Piano at C major scale</li>
+                <li>Drum beat at 120 bpm with eighth notes, kick and snare</li>
+                <li>Pad with sixteenth notes</li>
+              </ul>
+              What you don't inform will be randomly picked for you! Please
+              refer to the table below for more options.
+            </Text>
+            <Title level={2}>2. Review extracted information</Title>
+            <Text>
+              Ideally the app will have recognized what you described, but
+              that's not always the case. <br />
+              You can review what was extracted, add, change or delete
+              information before committing to it.
             </Text>
           </Col>
         </Row>
         <Row>
           <Col span={12} className="ContainerHTU2">
-            <Title level={2}>3. Lorem Ipsum</Title>
+            <Title level={2}>3. Hear it and tweak it</Title>
             <Text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-              euismod neque et dignissim pharetra. Etiam semper ut lacus a
-              facilisis. Mauris eu nibh molestie, sollicitudin turpis dictum,
-              pellentesque urna.Donec vel nulla dictum, aliquam ante id, porta
-              ex. Etiam suscipit porttitor lorem, ut convallis orci sodales ut.
+              A sample with the characteristics you informed will be generated.
+              You can press the play button to hear it. You can toggle between
+              the original generated sample or variations. When you select
+              "Variations", you can move the four sliders to generate small
+              variations of the original sound. Sometimes the model will have no
+              ideas for variations on the sounds: the more notes, the more
+              chances to have variations, so try again with faster notes in this
+              case!
             </Text>
-            <Title level={2}>4. Lorem Ipsum</Title>
+            <Title level={2}>4. Export</Title>
             <Text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-              euismod neque et dignissim pharetra. Etiam semper ut lacus a
-              facilisis. Mauris eu nibh molestie, sollicitudin turpis dictum,
-              pellentesque urna.Donec vel nulla dictum, aliquam ante id, porta
-              ex. Etiam suscipit porttitor lorem, ut convallis orci sodales ut.
+              If you were able to generate a cool idea, you can press the Export
+              button and export it as a MIDI file, to continue the work in your
+              DAW or wherever you want.
+              <br />
+              If not, you can always repeat the process and try again!
             </Text>
             <br />
-            <Button type="primary" className="ButtonHTU">
-              GETTING STARTED
+            <Button type="primary" className="ButtonHTU" href="/">
+              I AM READY
             </Button>
           </Col>
           <Col span={12} className="ContainerHTU-ilus">
