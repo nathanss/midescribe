@@ -13,12 +13,14 @@ import {
 } from "@midescribe/common";
 import { LevenshteinDistance } from "natural";
 
+const ignoreList = new Set().add("CONJ").add("ADP").add("PUNCT");
+
 export default class MusicIdeaGenerator {
   private musicIdea: SongIdeaEntryPoint;
   constructor() {
     this.musicIdea = {};
   }
-  generateFromAnalyzeEntitiesSyntax(
+  public generateFromAnalyzeEntitiesSyntax(
     analyzeSyntaxResponse: google.cloud.language.v1.IAnalyzeSyntaxResponse
   ): SongIdeaEntryPoint {
     const tokens = analyzeSyntaxResponse.tokens || [];
@@ -31,7 +33,7 @@ export default class MusicIdeaGenerator {
     return this.musicIdea;
   }
 
-  visit(
+  private visit(
     tokens: google.cloud.language.v1.IToken[],
     index: number,
     visited: Set<number>
@@ -42,6 +44,9 @@ export default class MusicIdeaGenerator {
     const token = tokens[index];
     const textContent = token.text?.content?.toLowerCase() || "";
     visited.add(index);
+    if (ignoreList.has(token.partOfSpeech?.tag)) {
+      return;
+    }
     if (this.isNumeric(token)) {
       const headTokenIndex = token.dependencyEdge?.headTokenIndex;
       if (headTokenIndex !== index && typeof headTokenIndex === "number") {
@@ -59,7 +64,13 @@ export default class MusicIdeaGenerator {
     } else if (this.isTempoDescription(textContent)) {
       this.musicIdea.tempoDescription = textContent as any;
     } else if (this.isScaleDescription(textContent)) {
-      this.musicIdea.scale = textContent;
+      this.musicIdea.scale = this.getBestMatchAndMarkVisit(
+        ScaleArray,
+        textContent,
+        tokens,
+        index,
+        visited
+      );
     } else if (this.isKeyDescription(textContent)) {
       this.musicIdea.key = textContent;
     } else if (this.getNotesDuration(textContent)) {
@@ -69,6 +80,33 @@ export default class MusicIdeaGenerator {
       this.handleInstrumentsAndPercussion(textContent, tokens, index, visited);
     }
   }
+  private getBestMatchAndMarkVisit(
+    ScaleArray: string[],
+    textContent: string,
+    tokens: google.cloud.language.v1.IToken[],
+    index: number,
+    visited: Set<number>
+  ): ScaleType {
+    let result: any = textContent;
+    let resultAux = result;
+    let textContentAux = textContent;
+    while (resultAux) {
+      textContentAux += " " + tokens[index + 1].text?.content;
+      resultAux = ScaleArray.find((a) => a === textContentAux);
+      if (resultAux) {
+        result = resultAux;
+        textContent = textContentAux;
+      }
+    }
+    this.markLookaheadVisited(
+      textContent.split(" ").length - 1,
+      visited,
+      index
+    );
+
+    return result;
+  }
+
   private handleInstrumentsAndPercussion(
     textContent: string,
     tokens: google.cloud.language.v1.IToken[],
@@ -198,13 +236,10 @@ export default class MusicIdeaGenerator {
     }
     this.musicIdea.drumLoop.push(percussionMatch);
   }
-  private getBetterMatch(
-    instrumentPartialMatches: string[],
-    newTextContent: string
-  ) {
+  private getBetterMatch(partialMatches: string[], newTextContent: string) {
     let min = +Infinity;
-    let result = instrumentPartialMatches[0];
-    instrumentPartialMatches.forEach((match) => {
+    let result = partialMatches[0];
+    partialMatches.forEach((match) => {
       const distance = LevenshteinDistance(match, newTextContent);
       if (distance < min) {
         min = distance;

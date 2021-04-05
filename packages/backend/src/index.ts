@@ -37,6 +37,7 @@ app.post("/generateMusicIdea", body("text").isString(), async (req, res) => {
     },
     encodingType: "UTF8",
   });
+  console.log(JSON.stringify(result));
   const musicIdea = new MusicIdeaGenerator().generateFromAnalyzeEntitiesSyntax(
     result
   );

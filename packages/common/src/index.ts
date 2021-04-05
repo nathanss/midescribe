@@ -135,7 +135,6 @@ export const KeyToOffset = {
 
 export const Percussion = {
   kick: 36,
-  "bass drum": 36,
   "side stick": 37,
   snare: 38,
   "hand clap": 39,
