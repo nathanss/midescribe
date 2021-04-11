@@ -45,16 +45,26 @@ export const SongIdeaPropertiesDescription: Partial<
 > = {
   tempo: "Tempo (BPM)",
   scale: "Scale",
-  key: "Key (e.g. C#)",
-  notesDuration:
-    "The duration that you want most of your notes to be in (e.g. quarter notes)",
+  key: "Key",
+  notesDuration: "The duration that you want most of your notes to be in",
   instrument:
-    "The instrument you want to be played in Preview and imbued in the MIDI data (e.g. piano)",
+    "The instrument you want to be played in Preview and imbued in the MIDI data",
   isDrum: "Whether the part is a drum beat or not",
   drumPowerHand:
     "In what part the beat is conducted (tipically hi-hat or ride)",
   drumLoop: "The drum parts that will be played (in a loop) during the beat",
   drumOpeningHit: "The drum part that is played at the beginning",
+};
+
+export const SongIdeaPropertiesSample: Partial<
+  Record<keyof SongIdeaEntryPoint, string>
+> = {
+  tempo: "120 BPM",
+  scale: "Minor Pentatonic",
+  key: "C#",
+  notesDuration: "Quarter Notes",
+  instrument: "Electric Grand Piano",
+  drumLoop: "Kick, kick, kick, snare",
 };
 
 export const ScaleArray = [

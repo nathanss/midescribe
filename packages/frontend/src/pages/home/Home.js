@@ -63,7 +63,6 @@ function Home() {
   };
 
   return (
-    //TODO perhaps create a component to render component + delete button with col and row
     <>
       <div className="site-layout-content">
         <h2>Title</h2>
@@ -71,7 +70,7 @@ function Home() {
           <Form.Item
             label="Song description"
             name="description"
-            tooltip="TODO"
+            tooltip='Please input your song description here. For more information please click on "How to use" on the header'
             rules={[
               { required: true, message: "Please input your description!" },
             ]}
