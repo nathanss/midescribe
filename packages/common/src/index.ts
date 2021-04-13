@@ -163,8 +163,6 @@ export const Percussion = {
 };
 
 export const NotesDuration = {
-  "whole note": 16,
-  "half note": 8,
   "quarter notes": 4,
   "eighth notes": 2,
   "sixteenth notes": 1,
