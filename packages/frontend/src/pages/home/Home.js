@@ -30,6 +30,7 @@ function Home() {
       setCharacteristics(musicIdeaResponse);
       setShowExtractedData(true);
       setRequestOngoing(false);
+      setIsFillingManually(false);
     } catch (e) {
       setRequestOngoing(false);
       message.error(
@@ -41,6 +42,8 @@ function Home() {
   const [sequence, setSequence] = useState(Sequence);
   const [isDrum, setIsDrum] = useState(false);
   const [requestOngoing, setRequestOngoing] = useState(false);
+
+  const [isFillingManually, setIsFillingManually] = useState(false);
 
   const layout = {
     labelCol: { span: 4 },
@@ -60,6 +63,7 @@ function Home() {
 
   const onFillManuallyClick = () => {
     setShowExtractedData(true);
+    setIsFillingManually(true);
   };
 
   return (
@@ -99,7 +103,9 @@ function Home() {
       </div>
       {showExtractedData && (
         <div className="site-layout-content">
-          <h2>Here's what was recognized from your description</h2>
+          {!isFillingManually && (
+            <h2>Here's what was recognized from your description</h2>
+          )}
           <CharacteristicsForm
             characteristics={characteristics}
             onDescriptionSubmit={onDescriptionSubmit}
