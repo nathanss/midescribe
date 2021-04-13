@@ -177,7 +177,7 @@ export default function Preview({ originalSequence, isDrum }) {
           {showTrained && (
             <Form.Item
               label="Sliders"
-              tooltip="You can tweak these four sliders from -1 to 1 to get variations of the generated sound"
+              tooltip="You can tweak these four sliders from -1 to 1 to get variations of the generated sound. It works better with sixteenth notes duration."
             >
               <Row>
                 <Col span={6}>
