@@ -69,7 +69,7 @@ function Home() {
   return (
     <>
       <div className="site-layout-content">
-        <h2>Title</h2>
+        <h2>Describe your music idea</h2>
         <Form {...layout} onFinish={onFinish}>
           <Form.Item
             label="Song description"
