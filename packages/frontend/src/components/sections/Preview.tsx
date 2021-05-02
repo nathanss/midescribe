@@ -14,14 +14,15 @@ import {
   tf,
 } from "@magenta/music/es6";
 import { DEFAULT_VELOCITY } from "@midescribe/common";
+import { tensorflow } from "@magenta/music/es6/protobuf/proto";
 
 let player = new SoundFontPlayer(
   "https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus"
-);
+) as any;
 
 const N_EPOCHS = 100;
 
-export default function Preview({ originalSequence, isDrum }) {
+export default function Preview({ originalSequence, isDrum }: any) {
   const [playing, setPlaying] = useState(false);
   const [isTrained, setIsTrained] = useState(false);
   const [sequence, setSequence] = useState(originalSequence);
@@ -31,8 +32,8 @@ export default function Preview({ originalSequence, isDrum }) {
     slider3: 0.5,
     slider4: 0.5,
   });
-  const [midime, setMidime] = useState(null);
-  const [mvae, setMvae] = useState(null);
+  const [midime, setMidime] = useState<MidiMe | null>(null);
+  const [mvae, setMvae] = useState<MusicVAE | null>(null);
   const [showTrained, setShowTrained] = useState(false);
   const [currentEpoch, setCurrentEpoch] = useState(0);
 
@@ -56,7 +57,7 @@ export default function Preview({ originalSequence, isDrum }) {
       await midime.initialize();
       // for some reason it works quantizing when it is melodic but breaks when isDrum
       const z = await mvae.encode([originalSequence]);
-      await midime.train(z, async (epoch, logs) => {
+      await midime.train(z, async (epoch: any) => {
         setCurrentEpoch(epoch);
       });
       setIsTrained(true);
@@ -71,7 +72,7 @@ export default function Preview({ originalSequence, isDrum }) {
       showTrained
         ? sequences.unquantizeSequence(sequence)
         : sequences.unquantizeSequence(originalSequence),
-      document.getElementById("previewSvg"),
+      document.getElementById("previewSvg") as any,
       {
         noteRGB: "35,70,90",
         activeNoteRGB: "157, 229, 184",
@@ -80,8 +81,9 @@ export default function Preview({ originalSequence, isDrum }) {
         noteSpacing: 5,
       }
     );
+   
     player.callbackObject = {
-      run: (note) => {
+      run: (note: tensorflow.magenta.NoteSequence.INote | undefined) => {
         visualizer.redraw(note, true);
       },
       stop: () => {
@@ -91,10 +93,10 @@ export default function Preview({ originalSequence, isDrum }) {
   }, [sequence, originalSequence, showTrained]);
 
   useEffect(() => {
-    const addMetadataToSampleDecoded = (sampleDecoded) => {
+    const addMetadataToSampleDecoded = (sampleDecoded: tensorflow.magenta.INoteSequence) => {
       if (!isDrum && originalSequence.notes && originalSequence.notes[0]) {
         const originalProgram = originalSequence.notes[0].program;
-        sampleDecoded.notes.forEach((note) => {
+        sampleDecoded.notes!.forEach((note) => {
           note.program = originalProgram;
         });
       }
@@ -110,7 +112,7 @@ export default function Preview({ originalSequence, isDrum }) {
         sliders.slider3,
         sliders.slider4,
       ];
-      const sample = await midime.decode(tf.tensor(zFrom4Sliders, [1, 4]));
+      const sample = await midime.decode(tf.tensor(zFrom4Sliders, [1, 4])) as any;
       const sampleDecoded = (await mvae.decode(sample))[0];
       addMetadataToSampleDecoded(sampleDecoded);
       setSequence(sampleDecoded);
@@ -136,7 +138,7 @@ export default function Preview({ originalSequence, isDrum }) {
   }
 
   function onExportClick() {
-    sequence.notes.forEach((note) => {
+    sequence.notes.forEach((note: { velocity: number; }) => {
       note.velocity = DEFAULT_VELOCITY;
     });
     saveAs(
@@ -183,7 +185,7 @@ export default function Preview({ originalSequence, isDrum }) {
                 <Col span={6}>
                   <MidiMeSlider
                     value={sliders.slider1}
-                    onAfterChange={(value) => {
+                    onAfterChange={(value: any) => {
                       setSliders({ ...sliders, slider1: value });
                     }}
                   />
@@ -191,7 +193,7 @@ export default function Preview({ originalSequence, isDrum }) {
                 <Col span={6}>
                   <MidiMeSlider
                     value={sliders.slider2}
-                    onAfterChange={(value) => {
+                    onAfterChange={(value: any) => {
                       setSliders({ ...sliders, slider2: value });
                     }}
                   />
@@ -199,7 +201,7 @@ export default function Preview({ originalSequence, isDrum }) {
                 <Col span={6}>
                   <MidiMeSlider
                     value={sliders.slider3}
-                    onAfterChange={(value) => {
+                    onAfterChange={(value: any) => {
                       setSliders({ ...sliders, slider3: value });
                     }}
                   />
@@ -207,7 +209,7 @@ export default function Preview({ originalSequence, isDrum }) {
                 <Col span={6}>
                   <MidiMeSlider
                     value={sliders.slider4}
-                    onAfterChange={(value) => {
+                    onAfterChange={(value: any) => {
                       setSliders({ ...sliders, slider4: value });
                     }}
                   />
