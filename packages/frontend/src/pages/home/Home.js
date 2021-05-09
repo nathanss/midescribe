@@ -1,5 +1,5 @@
 import { Button, Form, Input, message } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CharacteristicsForm from "../../components/sections/CharacteristicsForm";
 import Preview from "../../components/sections/Preview";
 import "./Home.css";
@@ -18,6 +18,13 @@ function Home() {
     tempo: 120,
     timeSignature: "4:4",
   });
+  
+  useEffect(() => {
+    fetch(process.env.REACT_APP_BACKEND_DESTINATION + "/ping", {
+      method: "GET"
+    });
+  }, []);
+
   async function onFinish() {
     try {
       setRequestOngoing(true);

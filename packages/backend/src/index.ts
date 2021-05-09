@@ -43,3 +43,7 @@ app.post("/generateMusicIdea", body("text").isString(), async (req, res) => {
   );
   return res.json(musicIdea);
 });
+
+app.get("/ping", (_, res) => {
+  res.send(204);
+});
