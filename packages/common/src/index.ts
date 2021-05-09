@@ -168,6 +168,8 @@ export const NotesDuration = {
   "sixteenth notes": 1,
 };
 
+export const NotesDurationArray = Object.keys(NotesDuration);
+
 export const TempoDescription = {
   fast: 180,
 };

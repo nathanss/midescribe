@@ -67,4 +67,31 @@ describe("Music Idea Generator", () => {
       timeSignature: "4:4",
     });
   });
+
+  it("Pizzicato Strings with sixteenth notes", () => {
+    const response = musicGenerator.generateFromAnalyzeEntitiesSyntax(
+      generateGoogleAnalyseSyntaxResponseFrom(
+        "Pizzicato Strings with sixteenth notes"
+      )
+    );
+    expect(response).to.deep.equal({
+      instrument: "pizzicato strings",
+      notesDuration: "sixteenth notes",
+      timeSignature: "4:4",
+    });
+  });
+
+  it("Pizzicato Strings with sixteenth notes and melodic minor", () => {
+    const response = musicGenerator.generateFromAnalyzeEntitiesSyntax(
+      generateGoogleAnalyseSyntaxResponseFrom(
+        "Pizzicato Strings with sixteenth notes and melodic minor"
+      )
+    );
+    expect(response).to.deep.equal({
+      instrument: "pizzicato strings",
+      notesDuration: "sixteenth notes",
+      scale: "melodic minor",
+      timeSignature: "4:4",
+    });
+  });
 });

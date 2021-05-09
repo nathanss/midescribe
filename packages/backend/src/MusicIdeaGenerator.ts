@@ -10,6 +10,8 @@ import {
   NotesDuration,
   Instruments,
   Percussion,
+  NotesDurationArray,
+  ScaleToValues,
 } from "@midescribe/common";
 import { LevenshteinDistance } from "natural";
 
@@ -61,9 +63,9 @@ export default class MusicIdeaGenerator {
           this.musicIdea.tempo = textContent;
         }
       }
-    } else if (this.isTempoDescription(textContent)) {
-      this.musicIdea.tempoDescription = textContent as any;
-    } else if (this.isScaleDescription(textContent)) {
+    }  else if (this.isKeyDescription(textContent)) {
+      this.musicIdea.key = textContent;
+    } else if (this.getScaleDescription(textContent)) {
       this.musicIdea.scale = this.getBestMatchAndMarkVisit(
         ScaleArray,
         textContent,
@@ -71,28 +73,25 @@ export default class MusicIdeaGenerator {
         index,
         visited
       );
-    } else if (this.isKeyDescription(textContent)) {
-      this.musicIdea.key = textContent;
     } else if (this.getNotesDuration(textContent)) {
-      const notesDuration = this.getNotesDuration(textContent);
-      this.musicIdea.notesDuration = notesDuration;
+      this.musicIdea.notesDuration = this.getBestMatchAndMarkVisit(NotesDurationArray, textContent, tokens, index, visited);;
     } else {
       this.handleInstrumentsAndPercussion(textContent, tokens, index, visited);
     }
   }
   private getBestMatchAndMarkVisit(
-    ScaleArray: string[],
+    array: string[],
     textContent: string,
     tokens: google.cloud.language.v1.IToken[],
     index: number,
     visited: Set<number>
-  ): ScaleType {
+  ): any {
     let result: any = textContent;
     let resultAux = result;
     let textContentAux = textContent;
-    while (resultAux) {
-      textContentAux += " " + tokens[index + 1].text?.content;
-      resultAux = ScaleArray.find((a) => a === textContentAux);
+    while (resultAux && index + 1 < tokens.length) {
+      textContentAux += " " + tokens[index + 1].text?.content?.toLowerCase();
+      resultAux = array.find((a) => a === textContentAux);
       if (resultAux) {
         result = resultAux;
         textContent = textContentAux;
@@ -122,6 +121,9 @@ export default class MusicIdeaGenerator {
       index,
       tokens
     );
+    if (instrumentPartialMatches.length === 0 && percussionPartialMatches.length === 0) {
+      return;
+    }
     this.markLookaheadVisited(
       newTextContent.split(" ").length - 1,
       visited,
@@ -159,7 +161,7 @@ export default class MusicIdeaGenerator {
         percussionPartialMatchesAux.length > 0) &&
       count < tokens.length
     ) {
-      newTextContentAux += " " + tokens[count].text?.content;
+      newTextContentAux += " " + tokens[count].text?.content?.toLowerCase();
       instrumentPartialMatchesAux = this.getPartialMatches(
         Instruments,
         newTextContentAux
@@ -253,7 +255,7 @@ export default class MusicIdeaGenerator {
     visited: Set<number>,
     index: number
   ) {
-    for (let i = 1; i <= length; i++) {
+    for (let i = 1; i < length + 1; i++) {
       visited.add(index + i);
     }
   }
@@ -265,6 +267,10 @@ export default class MusicIdeaGenerator {
     return this.findPropertyThatStartsWith(NotesDuration, textContent);
   }
 
+  private getScaleDescription(textContent: string): any {
+    return this.findPropertyThatStartsWith(ScaleToValues, textContent);
+  }
+
   private findPropertyThatStartsWith(object: any, textContent: string) {
     return Object.keys(object).find((noteDuration) => {
       return noteDuration.startsWith(textContent);
@@ -272,12 +278,6 @@ export default class MusicIdeaGenerator {
   }
   private isKeyDescription(textContent: string): textContent is KeysType {
     return KeysArray.includes(textContent);
-  }
-  private isScaleDescription(textContent: string): textContent is ScaleType {
-    return ScaleArray.includes(textContent);
-  }
-  private isTempoDescription(content: string) {
-    return TempoDescription.hasOwnProperty(content);
   }
 
   private isNumeric(token: google.cloud.language.v1.IToken) {
