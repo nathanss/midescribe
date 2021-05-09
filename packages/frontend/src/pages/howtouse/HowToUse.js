@@ -121,20 +121,7 @@ function HowToUse() {
               </Text>
               <Title level={2}>1. Fill in your song description</Title>
               <Text>
-                There are several characteristics that you can inform in this
-                free text field, such as:
-                <ul>
-                  <li>Piano at C major scale</li>
-                  <li>
-                    Drum beat at 120 bpm with eighth notes, kick and snare
-                  </li>
-                  <li>Pad with sixteenth notes</li>
-                </ul>
-                What you don't inform will be randomly picked for you!
-                <br />
-                <br />
-                Please refer to the table below for more options. The types of
-                characteristics below will be recognized from your description.
+                In this section, you can describe several types of characteristics in a free text field. The following characteristics are supported and will be recognized in your text, if informed:
                 <br />
                 <br />
                 <Table dataSource={dataSource} columns={columns} />
@@ -154,6 +141,19 @@ function HowToUse() {
                     View list of available percussion parts
                   </Button>
                 </div>
+              </Text>
+              <Text>
+              <br/>
+              Using the characteristics above, here are some sample phrases that could work:
+              <br/><br/>
+                <ul>
+                  <li>Piano at C major scale</li>
+                  <li>
+                    Drum beat at 120 bpm with eighth notes, kick and snare
+                  </li>
+                  <li>Harpsichord with sixteenth notes</li>
+                </ul>
+                What you don't inform will be randomly picked for you!
               </Text>
               <Title level={2}>2. Review extracted information</Title>
               <Text>
