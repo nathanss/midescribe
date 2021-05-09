@@ -36,7 +36,7 @@ const columns = [
     key: "description",
   },
   {
-    title: "Sample",
+    title: "Example",
     dataIndex: "sample",
     key: "sample",
   },
