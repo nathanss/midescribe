@@ -42,6 +42,8 @@ export default function CharacteristicsForm(props: any) {
 
   const [addFieldModalOpen, setAddFieldModalOpen] = useState<boolean>(false);
 
+  const [submitDisabled, setSubmitDisabled] = useState<boolean>(false);
+
   const [selectedRowKeys, setSelectedRowKeys] = useState<Array<any>>([]);
 
   const removeCharacteristic = (name: keyof SongIdeaEntryPoint) => {
@@ -262,7 +264,12 @@ export default function CharacteristicsForm(props: any) {
           <Button
             type="primary"
             htmlType="submit"
+            disabled={submitDisabled}
             onClick={() => {
+              setSubmitDisabled(true);
+              setTimeout(() => {
+                setSubmitDisabled(false);
+              }, 5000);
               props.onDescriptionSubmit(characteristics);
             }}
           >
