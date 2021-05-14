@@ -6,6 +6,7 @@ import "./Home.css";
 import { Sequence } from "../../constants/Sequences";
 import { SongDescriptorNoteSequenceGenerator } from "../../musicGeneration/SongDescriptorNoteSequenceGenerator";
 import { NoteSequence } from "@magenta/music/es6";
+import { SongIdeaEntryPoint } from "@midescribe/common";
 
 const backendEndpointUrl =
   process.env.REACT_APP_BACKEND_DESTINATION + "/generateMusicIdea";
@@ -46,7 +47,7 @@ function Home() {
     }
   }
 
-  const [sequence, setSequence] = useState(Sequence);
+  const [sequence, setSequence] = useState<any>(Sequence);
   const [isDrum, setIsDrum] = useState(false);
   const [requestOngoing, setRequestOngoing] = useState(false);
 
@@ -57,14 +58,14 @@ function Home() {
     wrapperCol: { span: 12 },
   };
 
-  const onDescriptionSubmit = (description) => {
+  const onDescriptionSubmit = (songIdea: SongIdeaEntryPoint) => {
     const generator = new SongDescriptorNoteSequenceGenerator(
-      description,
+      songIdea,
       NoteSequence.create
     );
     const sequence = generator.generateNoteSequence();
     setSequence(sequence);
-    setIsDrum(description.isDrum);
+    setIsDrum(songIdea.isDrum!);
     setShowPreview(true);
   };
 
