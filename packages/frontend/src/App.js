@@ -9,7 +9,7 @@ import Logo from "./assets/images/Logo.png";
 
 const { Header, Content, Footer } = Layout;
 
-function App() {
+function App({location}) {
   return (
     <BrowserRouter>
       <Layout>
@@ -18,20 +18,20 @@ function App() {
             theme="light"
             mode="horizontal"
             className="menuItem"
-            defaultSelectedKeys={["home"]}
+            defaultSelectedKeys={[location]}
           >
             <Menu.Item key="home_img" id="logo_nav">
               <Link to="/">
                 <img src={Logo} alt="" />
               </Link>
             </Menu.Item>
-            <Menu.Item key="home">
+            <Menu.Item key="/">
               <Link to="/">Home</Link>
             </Menu.Item>
-            <Menu.Item key="howtouse">
+            <Menu.Item key="/howtouse">
               <Link to="/howtouse">How to use</Link>
             </Menu.Item>
-            <Menu.Item key="contact">
+            <Menu.Item key="/contact">
               <Link to="/contact">Contact</Link>
             </Menu.Item>
           </Menu>
