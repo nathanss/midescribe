@@ -15,7 +15,7 @@ import {
 } from "@midescribe/common";
 import { LevenshteinDistance } from "natural";
 
-const ignoreList = new Set().add("CONJ").add("ADP").add("PUNCT");
+const ignoreList = new Set(["CONJ", "ADP", "PUNCT"]);
 
 export default class MusicIdeaGenerator {
   private musicIdea: SongIdeaEntryPoint;

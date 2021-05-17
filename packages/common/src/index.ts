@@ -85,7 +85,7 @@ export type ScaleType =
   | "major pentatonic"
   | "minor pentatonic";
 
-export const BpmUnitOfMeasures = new Set().add("bpm");
+export const BpmUnitOfMeasures = new Set(["bpm"]);
 
 export const ScaleToValues: Record<ScaleType | "undefined", number[]> = {
   major: [0, 2, 4, 5, 7, 9, 11],
