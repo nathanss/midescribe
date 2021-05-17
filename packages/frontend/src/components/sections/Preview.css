@@ -1,5 +1,4 @@
 html {
-  --green: #9de5b8;
   --blue: #23465a;
   --cream: #def2f1;
 
@@ -13,7 +12,7 @@ html {
 }
 
 .cream {
-  background: var(--cream);
+  background: rgb(205, 231, 247);
   border: 2px solid var(--blue);
   color: var(--blue);
 }

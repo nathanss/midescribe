@@ -75,7 +75,7 @@ export default function Preview({ originalSequence, isDrum }: any) {
       document.getElementById("previewSvg") as any,
       {
         noteRGB: "35,70,90",
-        activeNoteRGB: "157, 229, 184",
+        activeNoteRGB: "24, 144, 255",
         noteHeight: 10,
         pixelsPerTimeStep: 400,
         noteSpacing: 5,
