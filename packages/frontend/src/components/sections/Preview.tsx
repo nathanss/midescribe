@@ -20,17 +20,17 @@ let player = new SoundFontPlayer(
   "https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus"
 ) as any;
 
-const N_EPOCHS = 100;
+const N_EPOCHS = 50;
 
 export default function Preview({ originalSequence, isDrum }: any) {
   const [playing, setPlaying] = useState(false);
   const [isTrained, setIsTrained] = useState(false);
   const [sequence, setSequence] = useState(originalSequence);
   const [sliders, setSliders] = useState({
-    slider1: 0.5,
-    slider2: 0.5,
-    slider3: 0.5,
-    slider4: 0.5,
+    slider1: 0.0,
+    slider2: 0.0,
+    slider3: 0.0,
+    slider4: 0.0,
   });
   const [midime, setMidime] = useState<MidiMe | null>(null);
   const [mvae, setMvae] = useState<MusicVAE | null>(null);
@@ -112,10 +112,11 @@ export default function Preview({ originalSequence, isDrum }: any) {
         sliders.slider3,
         sliders.slider4,
       ];
-      const sample = await midime.decode(tf.tensor(zFrom4Sliders, [1, 4])) as any;
-      const sampleDecoded = (await mvae.decode(sample))[0];
-      addMetadataToSampleDecoded(sampleDecoded);
-      setSequence(sampleDecoded);
+      const tensorFromSliders = tf.tensor(zFrom4Sliders, [1, 4]);
+      const sample = await midime.decode(tensorFromSliders as any) as any;
+      const sampleDecodedArray = (await mvae.decode(sample));
+      addMetadataToSampleDecoded(sampleDecodedArray[0]);
+      setSequence(sampleDecodedArray[0]);
     }
     decode();
   }, [

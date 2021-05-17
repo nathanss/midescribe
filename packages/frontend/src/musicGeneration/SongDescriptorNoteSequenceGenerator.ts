@@ -19,7 +19,7 @@ type NoteSequenceCreator = (a: INoteSequence) => NoteSequence;
 export class SongDescriptorNoteSequenceGenerator {
   private properties: SongIdeaEntryPoint;
   private timeSignature: { numerator: number; denominator: number };
-  private readonly MIN_TEMPO = 100;
+  private readonly MIN_TEMPO = 60;
   private readonly MAX_TEMPO = 200;
 
   constructor(
